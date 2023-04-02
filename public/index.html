@@ -5,11 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title>문토미 - MoonTomi</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="install.webmanifest">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png">
   </head>
   <body>
     <noscript>
-      moontomi web built by Vue.js
+      대중 음악을 이해하기 위한 음평회 - 정기 음악 감상 공유 및 평가
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
