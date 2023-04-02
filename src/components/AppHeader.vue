@@ -84,7 +84,7 @@ export default {
 
 <style scoped>
 @font-face {
-  font-family: "BayatersStamp";
+  font-family: "Bayaters Stamp";
   src: url("../fonts/BayatersStampdemo-51PB8.ttf") format("truetype");
   font-style: normal;
   font-weight: normal;
@@ -105,7 +105,7 @@ export default {
   z-index: 10;
   text-align: center;
   background-color: #242d3c;
-  font-family: "BayatersStamp";
+  font-family: "Bayaters Stamp";
   font-size: 40px;
   color: aliceblue;
   padding: 10px;
