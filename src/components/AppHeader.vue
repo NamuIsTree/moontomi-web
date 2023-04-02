@@ -124,13 +124,13 @@ export default {
 }
 
 #nav-header {
-  font-family: "BayatersStamp";
+  font-family: "Bayaters Stamp";
   font-weight: 500;
   font-size: 25px;
 }
 
 #nav-subheader {
-  font-family: "BayatersStamp";
+  font-family: "Bayaters Stamp";
   margin: 5px;
   margin-top: -10px;
   margin-left: 16px;
