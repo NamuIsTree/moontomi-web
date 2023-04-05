@@ -1,7 +1,6 @@
 <template>
   <div class="main">
     <div class="hall-of-fame">
-      <h1 id="hall-of-fame-title">명예의 전당</h1>
       <hof-carousel :items="items" />
     </div>
   </div>
@@ -106,12 +105,7 @@ export default {
 .hall-of-fame {
   font-family: 'LINE Seed';
   font-weight: 900;
-  text-align: center;
+  text-align: left;
 }
-
-#hall-of-fame-title {
-  padding-top: 15px;
-}
-
 
 </style>
