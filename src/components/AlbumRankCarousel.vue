@@ -1,27 +1,24 @@
 <!-- https://ismail9k.github.io/vue3-carousel/examples.html#active-classes -->
 <template>
-    <carousel :itemsToShow="3.95" :wrapAround="true" :autoplay="3000" :transition="500">
+    <carousel :itemsToShow="itemsToShow" :wrapAround="true" :autoplay="3000" :transition="500">
         <slide v-for="(item, index) in items" :key="index">
             <div class="carousel__item">
-                <img class="carousel__img" :src="item.image" width="300" height="300">
-                <div class="carousel__img--caption">
-                    <span class="carousel__img--rank" v-if="index === 0">🥇 1위</span>
-                    <span class="carousel__img--rank" v-else-if="index === 1">🥈 2위</span>
-                    <span class="carousel__img--rank" v-else-if="index === 2">🥉 3위</span>
-                    <span class="carousel__img--rank" v-else>{{ index + 1 }}위</span>
-                    <span>{{ item.title }} ({{ item.rating.toFixed(1) }})</span>
-                    <br>
-                    <span>- {{ item.artist }} -</span>
+                <div class="carousel__img">
+                    <img class="carousel__img" :src="item.image">
+                    <img class="carousel__img--translucent" :src="'https://moontomi.netlify.app/rank/translucent_' + (index + 1) + '.png'">
                 </div>
             </div>
         </slide>
+
+        <template #addons>
+            <pagination />
+        </template>
     </carousel>
 </template>
   
 <script>
 import { defineComponent } from 'vue'
-import { Carousel, Slide } from 'vue3-carousel'
-
+import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
   
 export default defineComponent({
@@ -32,9 +29,28 @@ export default defineComponent({
             required: true
         }
     },
+    mounted() {
+        this.handleResize()
+        window.addEventListener('resize', this.handleResize)
+    },
     components: {
+        'pagination': Pagination,
         'carousel': Carousel,
         'slide': Slide
+    },
+    data() {
+        return {
+            itemsToShow: 0
+        }
+    },
+    methods: {
+        /* eslint-disable */
+        handleResize(event) {
+            let itemsToShow = Math.max(3.0, window.innerWidth / 200)
+            itemsToShow = Math.min(5.0, itemsToShow)
+            this.itemsToShow = itemsToShow
+
+        }
     }
 })
 </script>
@@ -43,11 +59,11 @@ export default defineComponent({
 .carousel__slide {
     padding: 5px;
     height: 30vw;
+    min-height: 230px;
 }
   
 .carousel__viewport {
-    perspective: 2000px;
-    height: 500px;
+    perspective: 1500px;
 }
   
 .carousel__track {
@@ -58,19 +74,28 @@ export default defineComponent({
     transition: 0.5s;
 }
   
+/* prev of prev slide*/
 .carousel__slide {
     opacity: 0.9;
-    transform: scale(0.85);
+    transform: rotateY(30deg) scale(0.88);
+}
+
+/* next of next slide*/
+.carousel__slide--active ~ .carousel__slide {
+    opacity: 0.9;
+    transform: rotateY(-30deg) scale(0.88);
 }
   
 .carousel__slide--prev {
-    opacity: 1;
-    transform: rotateY(-20deg) scale(0.95);
+    opacity: 0.95;
+    transform: rotateY(20deg) scale(0.95);
+    z-index: 8;
 }
   
 .carousel__slide--next {
-    opacity: 1;
-    transform: rotateY(20deg) scale(0.95);
+    opacity: 0.95 !important;
+    transform: rotateY(-20deg) scale(0.95) !important;
+    z-index: 8;
 }
   
 .carousel__slide--active {
@@ -83,23 +108,30 @@ export default defineComponent({
     position: relative;
 
     width: 24vw;
-    height: 24vw;
+    max-width: 400px;
+    min-width: 180px;
 
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    filter: brightness(0.8);
+    height: 24vw;
+    max-height: 400px;
+    min-height: 180px;
+
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 2px -2px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    filter: brightness(0.99);
 }
 
-.carousel__img--caption {
+.carousel__img--translucent {
     position: absolute;
 
-    bottom: 45px;
-    left: 0;
     width: 24vw;
-    height: 5vw;
-    /* background-color: rgba(0, 0, 0, 0.7); */
-    color: #fff;
-    padding: 10px;
-    font-size: 1vw;
+    max-width: 400px;
+    min-width: 180px;
+    
+    height: 24vw;
+    max-height: 400px;
+    min-height: 180px;
+
+    left: 0;
+    top: 0;
 }
 
 .carousel__img--rank {
