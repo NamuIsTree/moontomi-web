@@ -2,17 +2,20 @@
   <div class="main">
     <div class="hall-of-fame">
       <hof-carousel :items="items" />
+      <latest-lecture :album="latest_album"/>
     </div>
   </div>
 </template>
 
 <script>
 import AlbumRankCarousel from '@/components/AlbumRankCarousel.vue';
+import LatestLecture from '@/components/LatestLecture.vue';
 
 export default {
   name: 'App',
   components: {
-    'hof-carousel': AlbumRankCarousel
+    'hof-carousel': AlbumRankCarousel,
+    'latest-lecture': LatestLecture
   },
   data() {
     return {
@@ -87,7 +90,12 @@ export default {
           artist: 'Japanese Breakfast',
           rating: 7.3
         }
-      ]
+      ],
+      latest_album: {
+        title: 'Future Nostalgia',
+        artist: 'Dua Lipa',
+        image: 'https://moontomi.netlify.app/mock/1.jpg'
+      }
     }
   }
 }
@@ -100,6 +108,10 @@ export default {
   src: url("../fonts/LINESeedKR-Rg.ttf") format("truetype");
   font-style: normal;
   font-weight: normal;
+}
+
+.main {
+    padding-bottom: 300px;
 }
 
 .hall-of-fame {
