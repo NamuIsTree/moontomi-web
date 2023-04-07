@@ -22,23 +22,25 @@
                         <div class="contents-title">
                             금주 음평회
                         </div>
-                        <div class="contents-album">
+                        <div class="contents-album font-italic">
                             {{ album.title }}
                         </div>
-                        <div class="contents-artist">
+                        <div class="contents-artist font-italic">
                             {{ album.artist }}
                         </div>
-                        <v-btn 
-                            class="contents-btn" 
-                            rounded="xl" 
-                            variant="outlined"
-                        >
-                            평가하기
-                        </v-btn>
                     </div>
                 </v-col>
             </v-row>
         </v-container>
+    </div>
+    <div class="d-flex justify-center pt-4 pb-10">
+      <v-btn
+        class="link-button font-weight-black"
+        variant="text"
+        :href="'/#/lecture/' + album.id"
+      >
+        GO TO COMMENT >>
+      </v-btn>
     </div>
 </template>
 
@@ -65,10 +67,6 @@ export default defineComponent({
   font-weight: normal;
 }
 
-.blank {
-    padding: 30px;
-}
-
 .main {
     font-family: 'LINE Seed';
     position: relative;
@@ -79,14 +77,14 @@ export default defineComponent({
     position: relative;
     height: min(max(30vw, 200px), 500px);
 
-    filter: brightness(80%) blur(10px);
+    filter: brightness(80%) blur(0.6vw);
     transform: scale(1.1);
 }
 
 .contents {
     position: absolute;
     height: min(max(30vw, 200px), 500px);
-    top: min(max(1vw, 13px), 30px);
+    top: min(max(1vw, 14px), 30px);
 }
 
 .contents-img {
@@ -96,22 +94,15 @@ export default defineComponent({
 }
 
 .contents-title {
-    font-size: min(4vw, 50px);
+    font-size: min(max(4vw, 25px), 50px);
 }
 
 .contents-album {
-    font-size: min(2vw, 25px);
+  font-size: min(max(3vw, 15px), 40px);
 }
 
 .contents-artist {
-    font-size: min(2vw, 25px);
-}
-
-.contents-btn {
-    font-weight: 700;
-    font-size: min(1.8vw, 18px);
-    margin-top: 1vw;
-    border-width: 2px;
+  font-size: min(max(2.5vw, 13px), 32px);
 }
 
 </style>
