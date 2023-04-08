@@ -25,11 +25,13 @@
           >
             <v-chip
               v-for="genre in lecture.genres"
-              :key="genre.category + ' ' + genre.name"
+              :key="genre.category + '::' + genre.name"
               variant="outlined"
               size="small"
             >
-              {{ genre.name.toUpperCase() }} | {{ genre.category }}
+              <span class="pr-2">{{ genre.name.toUpperCase() }}</span>
+              <v-divider color="black" vertical></v-divider>
+              <span class="pl-2">{{ genre.category }}</span>
             </v-chip>
           </v-chip-group>
         </v-col>
