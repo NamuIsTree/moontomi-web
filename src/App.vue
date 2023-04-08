@@ -6,7 +6,6 @@
     <v-main class="contents-wrapper">
       <router-view/>
     </v-main>
-    <!-- <div class="blank" /> -->
     <!-- Footer -->
     <app-footer/>
   </v-app>
@@ -28,12 +27,11 @@ export default {
 <style scoped>
 .contents-wrapper {
   position: absolute;
-  top: 100px;
-}
+  overflow-x: hidden;
 
-.blank {
-    position: absolute;
-    padding: 1000px;
+  margin: 0 auto;
+
+  top: 90px;
 }
 
 </style>

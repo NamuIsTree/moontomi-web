@@ -198,6 +198,7 @@ export default {
 .main {
   font-family: 'LINE Seed';
   padding-bottom: 100px;
+  max-width: 1400px;
   overflow-x: hidden;
 }
 
