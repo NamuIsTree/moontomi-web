@@ -30,9 +30,10 @@
                   size="22"
                 ></v-rating>
               </div>
-              <span class="comment">{{ item.comment }}</span>
-              <div class="writer pt-4">by {{ item.writer }}</div>
+              <div class="comment pb-2">{{ item.comment }}</div>
             </div>
+            
+            <div class="writer">by {{ item.writer }}</div>
           </div>
         </div>
       </div>
@@ -82,12 +83,12 @@ export default defineComponent({
   background-size: cover !important;
   background-repeat: no-repeat !important;
   padding-top: 60%;
-  clip-path: polygon(100% 0, 100% 85%, 0% 100%, 0 0%);
+  clip-path: polygon(100% 0, 100% 80%, 0% 98%, 0 0%);
   transition: 0.3s;
 }
 
 .card:hover .image {
-  clip-path: polygon(100% 0, 100% 82%, 0% 98%, 0 0%);
+  clip-path: polygon(100% 0, 100% 77%, 0% 95%, 0 0%);
 }
 
 .header-subtitle {
@@ -107,12 +108,9 @@ export default defineComponent({
 }
 
 .comment {
-  display: inline-block;
+  position: relative;
   font-size: min(max(1.8vw, 15px), 20px);
   line-height: 1.5;
-  max-height: 1.5em;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .title {
