@@ -16,9 +16,7 @@
     :rail="rail"
     permanent
     touchless="false"
-
-    @mouseenter="rail=false"
-    @mouseleave="rail=true"
+    expand-on-hover
   >
     <v-list-item
     v-bind:class="{'nav-header': true, 'shrink-nav': shrink}"
