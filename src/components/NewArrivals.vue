@@ -107,8 +107,12 @@ export default defineComponent({
 }
 
 .comment {
+  display: inline-block;
   font-size: min(max(1.8vw, 15px), 20px);
   line-height: 1.5;
+  max-height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .title {
