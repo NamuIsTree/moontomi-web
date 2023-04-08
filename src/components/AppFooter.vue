@@ -1,48 +1,4 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    temporary
-    touchless="false"
-    fixed
-    app
-  >
-    <v-list-item
-      class="nav-header"
-      prepend-avatar="https://moontomi.netlify.app/icons/icon-192x192.png"
-      nav
-    >
-      <v-list-item-title
-        id="nav-header"
-      >
-        MOONTOMI
-      </v-list-item-title>
-    </v-list-item>
-
-    <v-divider></v-divider>
-
-    <v-list-item
-      v-for="item in items"
-      :key="item.title"
-      :to="{path:item.path}"
-    >
-      <v-list-item-icon>
-        <v-icon
-          color="#242d3c"
-        >
-          {{ item.icon }}
-        </v-icon>
-      </v-list-item-icon>
-
-      <v-list-item-content>
-        <v-list-item-title
-          id="nav-title"
-        >
-          {{ item.title }}
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-  </v-navigation-drawer>
-
   <v-footer
     bottom fixed
     width="100%"
@@ -53,19 +9,9 @@
       justify-center
       no-gutters
     >
-      
-      <v-col
-        id="nav-button pl-3"
-        cols="4"
-        @click="drawer = !drawer"
-      >
-        <v-icon
-          icon="mdi-view-headline"
-        ></v-icon>
-      </v-col>
       <v-col
         class="footer-text py-0.5 text-center"
-        cols="4"
+        cols="12"
       >
         <strong>MoonTomi v3.0</strong>
       </v-col>
