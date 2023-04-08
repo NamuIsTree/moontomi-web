@@ -2,6 +2,7 @@
   <v-navigation-drawer
     v-model="drawer"
     temporary
+    touchless="false"
     fixed
     app
   >

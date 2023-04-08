@@ -15,6 +15,7 @@
     v-model="drawer"
     :rail="rail"
     permanent
+    touchless="false"
 
     @mouseenter="rail=false"
     @mouseleave="rail=true"
