@@ -1,6 +1,6 @@
 <template>
   <div
-    v-bind:class="{'app-header': true, shrink: shrink}"
+    v-bind:class="{'app-header': true, 'shrink-app': shrink}"
   >
   MOONTOMI
     <span
@@ -16,14 +16,13 @@
     :rail="rail"
     permanent
     touchless="false"
-
-    @mouseenter="rail=false"
-    @mouseleave="rail=true"
+    expand-on-hover
   >
     <v-list-item
-      class="nav-header"
+    v-bind:class="{'nav-header': true, 'shrink-nav': shrink}"
       prepend-avatar="https://moontomi.netlify.app/icons/icon-192x192.png"
-      title="MOONTOMI NAVIGATE"
+      title="HELLO! MOONTOMI"
+      subtitle="NAVIGATION"
       nav
     ></v-list-item>
 
@@ -125,6 +124,13 @@ export default {
   transition-timing-function: cubic-bezier(0.295, 0.695, 0.290, 1.005);
 }
 
+.nav-header {
+  font-family: "Bayaters Stamp";
+  font-size: 20px;
+  font-weight: 500;
+  height: 90px;
+}
+
 #sub-app-header {
   display: block;
   font-weight: 600;
@@ -132,20 +138,20 @@ export default {
   font-size: 15px;
 }
 
-.nav-header {
-  font-family: "Bayaters Stamp";
-  font-size: 20px;
-  font-weight: 500;
-}
-
 .nav-title {
   font-family: "LINE Seed";
 }
 
-.shrink {
+.shrink-app {
   height: 50px;
   padding: 5px;
   font-size:30px;
   transition: 0.3s;
 }
+
+.shrink-nav {
+  height: 50px;
+  transition: 0.3s;
+}
+
 </style>

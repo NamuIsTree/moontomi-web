@@ -96,7 +96,7 @@ export default defineComponent({
 }
 
 .content {
-  padding: 10px 16px 12px 16px;
+  padding: 0px 16px 12px 16px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -140,12 +140,6 @@ export default defineComponent({
 main {
   padding: 24px;
 }
-/* 
-@media (min-width: 768px) {
-  main {
-    padding: 48px;
-  }
-} */
 </style>
 
 <!-- Responsive Breakpoints -->
