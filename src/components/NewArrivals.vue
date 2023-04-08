@@ -54,9 +54,6 @@ export default defineComponent({
       type: Array,
       required: true
     }
-  },
-  mounted() {
-    console.log(this.items)
   }
 })
 </script>

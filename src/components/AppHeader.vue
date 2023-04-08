@@ -1,7 +1,6 @@
 <template>
   <div
     v-bind:class="{'app-header': true, shrink: shrink}"
-    @click.stop="drawer = !drawer"
   >
   MOONTOMI
     <span
@@ -12,45 +11,32 @@
     </span>
   </div>
   <v-navigation-drawer
+    ref="header-nav"
     v-model="drawer"
-    temporary
-    fixed
-    app
+    :rail="rail"
+    permanent
+
+    @mouseenter="rail=false"
+    @mouseleave="rail=true"
   >
     <v-list-item
-      id="nav-header"
-    >
-      MOONTOMI
-    </v-list-item>
-    <v-list-item-subtitle
-      id="nav-subheader"
-    >
-      CONTROLLER
-    </v-list-item-subtitle>
+      class="nav-header"
+      prepend-avatar="https://moontomi.netlify.app/icons/icon-192x192.png"
+      title="MOONTOMI NAVIGATE"
+      nav
+    ></v-list-item>
 
     <v-divider></v-divider>
 
     <v-list-item
+      class="nav-title"
       v-for="item in items"
       :key="item.title"
       :to="{path:item.path}"
-    >
-      <v-list-item-icon>
-        <v-icon
-          color="#242d3c"
-        >
-          {{ item.icon }}
-        </v-icon>
-      </v-list-item-icon>
-
-      <v-list-item-content>
-        <v-list-item-title
-          id="nav-title"
-        >
-          {{ item.title }}
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
+      :prepend-icon="item.icon"
+      :title="item.title"
+      :value="item.title"
+    ></v-list-item>
   </v-navigation-drawer>
 </template>
 
@@ -58,11 +44,12 @@
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
+      rail: true,
       shrink: false,
       items: [
         { title: "HOME", icon: "mdi-home", path: "/" },
-        { title: "REVIEW", icon: "mdi-newspaper-variant-outline", path: "/reviews"},
+        { title: "칼럼", icon: "mdi-newspaper-variant-outline", path: "/reviews"},
         { title: "음평회", icon: "mdi-album", path: "/lectures"},
         { title: "둘러보기", icon: "mdi-history", path: "/lookup"},
         { title: "아카이브", icon: "mdi-music-circle-outline", path: "/singles"}
@@ -78,6 +65,20 @@ export default {
         this.shrink = false;
       }
     });
+
+    window.addEventListener('resize', this.handleResize);
+
+    this.handleResize()
+  },
+  methods: {
+    /* eslint-disable */
+    handleResize(event) {
+      if (window.innerWidth < 768) {
+        this.drawer = false;
+      } else {
+        this.drawer = true;
+      }
+    }
   }
 }
 </script>
@@ -86,6 +87,13 @@ export default {
 @font-face {
   font-family: "Bayaters Stamp";
   src: url("../fonts/BayatersStampdemo-51PB8.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "LINE Seed";
+  src: url("../fonts/LINESeedKR-Rg.ttf") format("truetype");
   font-style: normal;
   font-weight: normal;
 }
@@ -123,24 +131,14 @@ export default {
   font-size: 15px;
 }
 
-#nav-header {
+.nav-header {
   font-family: "Bayaters Stamp";
+  font-size: 20px;
   font-weight: 500;
-  font-size: 25px;
 }
 
-#nav-subheader {
-  font-family: "Bayaters Stamp";
-  margin: 5px;
-  margin-top: -10px;
-  margin-left: 16px;
-  margin-bottom: 10px;
-}
-
-#nav-title {
-  padding: 1px;
-  padding-left: 10px;
-  margin-top: 3px;
+.nav-title {
+  font-family: "LINE Seed";
 }
 
 .shrink {
