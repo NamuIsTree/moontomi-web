@@ -111,6 +111,7 @@ export default defineComponent({
   position: relative;
   font-size: min(max(1.8vw, 15px), 20px);
   line-height: 1.5;
+  word-break: keep-all;
 }
 
 .title {
