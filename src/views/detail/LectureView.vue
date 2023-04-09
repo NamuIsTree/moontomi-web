@@ -40,22 +40,46 @@
         align-center 
         class="text-center"
       >
-        <v-col class="d-flex flex-row align-self-center justify-center">
+        <v-col class="d-flex flex-row alignf-center justify-end pr-1">
           <img
+            class="lecture-image"
             :src="lecture.image"
-            width="300"
-            height="300"
           />
+        </v-col>
+
+        <v-col class="d-flex flex-row align-center justify-start pl-1">
+          <v-card
+            class="lecture-rating d-flex flex-column"
+            variant="outlined"
+          >
+            <div class="d-flex align-center flex-column my-auto">
+              <div class="rating-point">
+                7.5
+                <!-- 아직 안열린 lecture라면 'Not Yet'으로 설정할 예정 -->
+              </div>
+              <v-rating
+                :model-value="3.5"
+                color="grey"
+                active-color="#ff8080"
+                half-increments
+                readonly
+                size="26"
+              ></v-rating>
+              <div class="pt-2">2 comments</div>
+            </div>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
-    <v-container>
+    <v-container fluid>
       <v-row
-        class="py-3"
+        class="d-flex justify-center py-3"
         v-for="comment in comments"
         :key="comment.id"
       >
-        <v-col>
+        <v-col
+          class="d-flex justify-center"
+        >
           <v-card
             class="comment-card elevation-2"
             variant="outlined"
@@ -74,16 +98,20 @@
                 class="text-center"
                 v-if="!!comment.show"
               >
-                <v-rating
-                  v-model="comment.rating"
-                  color="grey"
-                  active-color="yellow-darken-4"
-                  half-increments
-                  readonly
-                  size="22"
-                ></v-rating>
+                <div class="comment-rating font-weight-black">
+                  <div>
+                    {{ (comment.rating * 2).toFixed(1) }}
+                  </div>
+                  <v-rating
+                    v-model="comment.rating"
+                    color="grey"
+                    active-color="yellow-darken-4"
+                    half-increments
+                    readonly
+                    size="22"
+                  ></v-rating>
+                </div>
                 <v-table
-                  class="pt-2"
                   divider="false"
                   density="compact"
                 >
@@ -105,7 +133,7 @@
                     </tr>
                   </tbody>
                 </v-table>
-                <div class="comment-text pt-4">
+                <div class="comment-text pt-3 px-4">
                   {{ comment.comment }}
                 </div>
               </div>
@@ -150,6 +178,16 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row class="d-flex justify-center py-3">
+        <v-col class="d-flex justify-center">
+          <v-btn class="comment-card post-button" height="100" @click="postComment">
+              <div class="d-flex justify-center align-center">
+                <v-icon icon="mdi-square-edit-outline"></v-icon>
+                <span class="ml-2">POST YOUR COMMENT</span>
+              </div>
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
   </v-container>
 </template>
@@ -161,6 +199,7 @@ export default defineComponent({
   name: 'LectureDetail',
   data() {
     return {
+      isPostMode: false,
       lecture: {
         title: 'Future Nostalgia',
         artist: 'Dua Lipa',
@@ -196,7 +235,7 @@ export default defineComponent({
         id: '422',
         nickname: '후지노미야이주희망자',
         date: '2023-04-01',
-        rating: 3.5,
+        rating: 3.6,
         bests: [
           'Good In Bed',
           'Don\'t Start Now',
@@ -204,6 +243,11 @@ export default defineComponent({
         ],
         comment: '세련되고 트렌디하면서도 아찔했다'
       }]
+    }
+  },
+  methods: {
+    postComment() {
+      alert('개발 중..')
     }
   }
 })
@@ -217,20 +261,38 @@ export default defineComponent({
   font-weight: normal;
 }
 
+@font-face {
+  font-family: "Lobster";
+  src: url("../../fonts/Lobster-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
 .main {
   font-family: "LINE Seed";
   padding-bottom: 100px;
 }
 
-.lecture-rating {
-  width: 150px;
-  height: 150px;
-  line-height: 150px;
-  font-size: 40px;
-  border: solid 4px;
-  border-radius: 100%;
+.lecture-image {
+  width: 88%;
+  min-width: 100px;
+  max-width: 300px;
 
-  font-weight: 700;
+  height: 100%;
+}
+
+.lecture-rating {
+  width: 88%;
+  min-width: 100px;
+  max-width: 300px;
+  height: 100%;
+
+  border: none;
+}
+
+.rating-point {
+  font-family: 'Lobster';
+  font-size: min(10vw, 60px);
 }
 
 .comment-writer {
@@ -244,7 +306,7 @@ export default defineComponent({
 
 .comment-date {
   font-size: 14px;
-  color: dimgrey;
+  color: grey;
 }
 
 .comment-card {
@@ -265,6 +327,11 @@ export default defineComponent({
 
 .comment-text {
   font-size: min(max(1.2vw, 16px), 18px) !important;
+  word-break: keep-all;
+}
+
+.post-button {
+  background-color:#f3f3f3;
 }
 
 .unlock-icon {
