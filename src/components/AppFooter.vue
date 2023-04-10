@@ -119,9 +119,16 @@
 
 #app-footer {
   font-family: "LINE Seed";
+  z-index: 100;
 
   background-color: #242d3c;
   color: aliceblue;
+}
+
+@media (min-width: 768px) {
+  #app-footer {
+    padding-left: 75px;
+  }
 }
 
 .nav-header {

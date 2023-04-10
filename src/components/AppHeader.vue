@@ -17,6 +17,7 @@
     permanent
     touchless="false"
     expand-on-hover
+    rail-width="75"
   >
     <v-list-item
     v-bind:class="{'nav-header': true, 'shrink-nav': shrink}"
@@ -122,6 +123,12 @@ export default {
   width: 100%;
   transition: 0.3s;
   transition-timing-function: cubic-bezier(0.295, 0.695, 0.290, 1.005);
+}
+
+@media (min-width: 768px) {
+  .app-header {
+    padding-left: 85px;
+  }
 }
 
 .nav-header {
