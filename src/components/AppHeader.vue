@@ -129,6 +129,10 @@ export default {
   .app-header {
     padding-left: 85px;
   }
+
+  .shrink-app {
+    padding-left: 80px !important;
+  }
 }
 
 .nav-header {
@@ -152,7 +156,7 @@ export default {
 .shrink-app {
   height: 50px;
   padding: 5px;
-  font-size:30px;
+  font-size: 30px;
   transition: 0.3s;
 }
 
