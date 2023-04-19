@@ -14,7 +14,9 @@
         </v-btn>
       </div>
     </div>
-    <latest-lecture :album="latestAlbum"/>
+    <div v-if="latestLecture != null" class="latest-lecture">
+      <latest-lecture :album="latestLecture"/>
+    </div>
     <v-divider inset></v-divider>
     <new-arrivals :items="newArrivals"/>
   </div>
@@ -35,6 +37,7 @@ export default {
   },
   mounted() {
     this.getTopAlbums()
+    this.getLatestLecture()
   },
   data() {
     return {
@@ -43,12 +46,7 @@ export default {
       lowerTop: [],
       topAlbums: [],
       reversed: false,
-      latestAlbum: {
-        id: 1,
-        title: 'Future Nostalgia',
-        artist: 'Dua Lipa',
-        image: 'https://moontomi.netlify.app/mock/1.jpg'
-      },
+      latestLecture: null,
       newArrivals: [
         {
           id: 1,
@@ -125,13 +123,20 @@ export default {
     },
     getTopAlbums: function() {
       let vue = this
-      axios.get('http://server.moontomi.com/lecture/top')
+      axios.get('https://server.moontomi.com/lecture/top')
       .then(function(res) {
         let data = res.data
         vue.upperTop = data['upper_top']
         vue.lowerTop = data['lower_top']
 
         vue.topAlbums = vue.upperTop
+      })
+    },
+    getLatestLecture: function() {
+      let vue = this
+      axios.get('https://server.moontomi.com/lecture/latest')
+      .then(function(res) {
+        vue.latestLecture = res.data
       })
     }
   }
