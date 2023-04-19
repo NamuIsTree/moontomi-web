@@ -47,7 +47,7 @@ export default defineComponent({
         /* eslint-disable */
         handleResize(event) {
             let itemsToShow = Math.max(3.0, window.innerWidth / 200)
-            itemsToShow = Math.min(5.0, itemsToShow)
+            itemsToShow = Math.min(4.8, itemsToShow)
             this.itemsToShow = itemsToShow
 
         }
