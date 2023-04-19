@@ -49,7 +49,6 @@ export default defineComponent({
             let itemsToShow = Math.max(3.0, window.innerWidth / 200)
             itemsToShow = Math.min(4.8, itemsToShow)
             this.itemsToShow = itemsToShow
-
         }
     }
 })
@@ -60,6 +59,7 @@ export default defineComponent({
     padding: 5px;
     height: 30vw;
     min-height: 230px;
+    max-height: 500px;
 }
   
 .carousel__viewport {
