@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="hall-of-fame">
+    <div v-if="topAlbums.length" class="hall-of-fame">
       <hof-carousel :items="topAlbums" />
       <div class="hof-button d-flex justify-center pt-4 pb-10">
         <v-btn
@@ -24,6 +24,7 @@
 import AlbumRankCarousel from '@/components/AlbumRankCarousel.vue';
 import LatestLecture from '@/components/LatestLecture.vue';
 import NewArrivals from '@/components/NewArrivals.vue';
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -32,80 +33,15 @@ export default {
     'latest-lecture': LatestLecture,
     'new-arrivals': NewArrivals
   },
+  mounted() {
+    this.getTopAlbums()
+  },
   data() {
     return {
-      topAlbums: [
-        {
-          id: 90,
-          image: 'https://moontomi.netlify.app/mock/90.jpg',
-          title: 'Actor',
-          artist: '緑黄色社会',
-          rating: 6.7
-        },
-        {
-          id: 91,
-          image: 'https://moontomi.netlify.app/mock/91.jpg',
-          title: 'Dragon New Warm Mountain I Believe in You',
-          artist: 'Big Thief',
-          rating: 7.3
-        },
-        {
-          id: 92,
-          image: 'https://moontomi.netlify.app/mock/92.jpg',
-          title: 'Beats Within My Soul',
-          artist: '바비 킴',
-          rating: 9.0
-        },
-        {
-          id: 93,
-          image: 'https://moontomi.netlify.app/mock/93.jpg',
-          title: '행진',
-          artist: '들국화',
-          rating: 8.2
-        },
-        {
-          id: 94,
-          image: 'https://moontomi.netlify.app/mock/94.jpg',
-          title: '늑대가 나타났다',
-          artist: '이랑',
-          rating: 8.6
-        },
-        {
-          id: 95,
-          image: 'https://moontomi.netlify.app/mock/95.jpg',
-          title: 'I Am a Bird Now',
-          artist: 'Anthony And The Johnsons',
-          rating: 6.0
-        },
-        {
-          id: 96,
-          image: 'https://moontomi.netlify.app/mock/96.jpg',
-          title: 'The Anecdote',
-          artist: 'E SENS',
-          rating: 7.0
-        },
-        {
-          id: 97,
-          image: 'https://moontomi.netlify.app/mock/97.jpg',
-          title: 'Funny Walkin\'',
-          artist: '佐藤奈々子',
-          rating: 7.8
-        },
-        {
-          id: 98,
-          image: 'https://moontomi.netlify.app/mock/98.jpg',
-          title: '空中キャンプ',
-          artist: 'フィッシュマンズ',
-          rating: 7.5
-        },
-        {
-          id: 99,
-          image: 'https://moontomi.netlify.app/mock/99.jpg',
-          title: 'Jubilee',
-          artist: 'Japanese Breakfast',
-          rating: 7.3
-        }
-      ],
+      isLoaded: false,
+      upperTop: [],
+      lowerTop: [],
+      topAlbums: [],
       reversed: false,
       latestAlbum: {
         id: 1,
@@ -180,7 +116,23 @@ export default {
   methods: {
     toggleHallOfFame() {
       this.reversed = !this.reversed
-      this.topAlbums.reverse()
+
+      if (this.reversed) {
+        this.topAlbums = this.lowerTop
+      } else {
+        this.topAlbums = this.upperTop
+      }
+    },
+    getTopAlbums: function() {
+      let vue = this
+      axios.get('http://server.moontomi.com/lecture/top')
+      .then(function(res) {
+        let data = res.data
+        vue.upperTop = data['upper_top']
+        vue.lowerTop = data['lower_top']
+
+        vue.topAlbums = vue.upperTop
+      })
     }
   }
 }
