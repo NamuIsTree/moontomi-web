@@ -26,6 +26,11 @@ const routes = [
     component: () => import("@/views/detail/LectureView")
   },
   {
+    path: "/comment/:mode(create|edit)/:id",
+    name: "comment-detail",
+    component: () => import("@/views/detail/CommentView")
+  },
+  {
     path: "/lookup",
     name: "lookup-main",
     component: () => import("@/views/LookupView")
@@ -41,7 +46,7 @@ const routes = [
     component: () => import("@/views/detail/SingleView")
   },
   {
-    path: "/*",
+    path: "/:pathMatch(.*)*",
     component: () => import("@/views/NotFoundView")
   }
 ]

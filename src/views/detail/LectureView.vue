@@ -1,9 +1,10 @@
 <template>
   <v-container class="main">
-    <v-container class="text-center" fill-height fluid>
+    <v-container v-if="lecture != null" class="text-center" fill-height fluid>
       <v-row>
         <v-col cols="12">
           <h4>{{ $route.params.id }} 회</h4>
+          <h4 v-if="lecture.date" style="color: #808080">{{ lecture.date }}</h4>
           <h1 class="font-italic">{{ lecture.title }}</h1>
           <h3 class="font-italic">{{ lecture.artist }} ({{ lecture.release }})</h3>
         </v-col>
@@ -53,19 +54,39 @@
             variant="outlined"
           >
             <div class="d-flex align-center flex-column my-auto">
-              <div class="rating-point">
-                7.5
-                <!-- 아직 안열린 lecture라면 'Not Yet'으로 설정할 예정 -->
+              <div v-if="lecture.rating">
+                <div
+                  class="lecture-rating-point"
+                  @mouseover="ratingHover = true"
+                  @mouseleave="ratingHover = false"
+                >
+                  <span v-if="ratingHover" class="rating-detail-point">
+                    {{ lecture.rating.toFixed(3) }}
+                  </span>
+                  <span v-else class="rating-point">
+                    {{ lecture.rating.toFixed(1) }}
+                  </span>
+                </div>
+                <v-rating
+                  :model-value="lecture.rating / 2"
+                  color="grey"
+                  active-color="#ff8080"
+                  half-increments
+                  readonly
+                  size="26"
+                ></v-rating>
               </div>
-              <v-rating
-                :model-value="3.5"
-                color="grey"
-                active-color="#ff8080"
-                half-increments
-                readonly
-                size="26"
-              ></v-rating>
-              <div class="pt-2">2 comments</div>
+              <!-- TODO: BUTTON 처럼 구현하기 -->
+              <div v-else
+                class="rating-point"
+                elevation="12"
+                @mouseover="ratingHover = true"
+                @mouseleave="ratingHover = false"
+              >
+                <span v-if="ratingHover">Open!</span>
+                <span v-else>Open?</span>
+              </div>
+              <div class="pt-2">{{ comments.length }} comments</div>
             </div>
           </v-card>
         </v-col>
@@ -87,7 +108,7 @@
           >
             <v-row class="px-4 py-4 font-weight-bold">
               <v-col class="comment-writer d-flex align-center justify-start">
-                <span>by {{ comment.nickname }}</span>
+                <span>by {{ comment.writer }}</span>
               </v-col>
               <v-col class="comment-date d-flex align-center justify-end">
                 <span>{{ comment.date }}</span>
@@ -96,14 +117,14 @@
             <v-expand-transition>
               <div
                 class="text-center"
-                v-if="!!comment.show"
+                v-if="lecture.rating != null || !!comment.show"
               >
                 <div class="comment-rating font-weight-black">
                   <div>
-                    {{ (comment.rating * 2).toFixed(1) }}
+                    {{ comment.rating.toFixed(1) }}
                   </div>
                   <v-rating
-                    v-model="comment.rating"
+                    :model-value="comment.rating / 2"
                     color="grey"
                     active-color="yellow-darken-4"
                     half-increments
@@ -112,6 +133,7 @@
                   ></v-rating>
                 </div>
                 <v-table
+                  class="best-tracks"
                   divider="false"
                   density="compact"
                 >
@@ -171,6 +193,7 @@
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn
+                v-if="lecture.rating == null"
                 :icon="!!comment.show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
                 @click="comment.show = !comment.show"
               ></v-btn>
@@ -194,60 +217,42 @@
 
 <script>
 import { defineComponent } from 'vue'
+import axios from 'axios'
 
 export default defineComponent({
   name: 'LectureDetail',
   data() {
     return {
-      isPostMode: false,
-      lecture: {
-        title: 'Future Nostalgia',
-        artist: 'Dua Lipa',
-        release: 2020,
-        rating: 8.0,
-        genres: [
-          {
-            category: 'POP',
-            name: 'Synth'
-          },
-          {
-            category: 'POP',
-            name: 'Disco'
-          }
-        ],
-        season: {
-          name: '2020 결산'
-        },
-        image: 'https://moontomi.netlify.app/mock/1.jpg'
-      },
-      comments: [{
-        id: '421',
-        nickname: '문교수',
-        date: '2023-04-01',
-        rating: 4.0,
-        bests: [
-          'Cool',
-          'Future Nostalgia',
-          'Good In Bed'
-        ],
-        comment: '2020년 디스코 시대의 시작을 알리는 첫 축포'
-      }, {
-        id: '422',
-        nickname: '후지노미야이주희망자',
-        date: '2023-04-01',
-        rating: 3.6,
-        bests: [
-          'Good In Bed',
-          'Don\'t Start Now',
-          'Love Again'
-        ],
-        comment: '세련되고 트렌디하면서도 아찔했다'
-      }]
+      ratingHover: false,
+      lecture: null,
+      comments: []
     }
+  },
+  mounted() {
+    this.getLecture()
+    this.getComments()
   },
   methods: {
     postComment() {
       alert('개발 중..')
+    },
+    getLecture() {
+      let vue = this
+      let lecture_id = vue.$route.params.id
+
+      axios.get('https://server.moontomi.com/lecture/' + lecture_id)
+        .then(function(res) {
+          vue.lecture = res.data
+        })
+    },
+    getComments() {
+      let vue = this
+      let lecture_id = vue.$route.params.id
+
+      axios.get('https://server.moontomi.com/lecture/' + lecture_id + "/comments")
+        .then(function(res) {
+          vue.comments = res.data
+        })
     }
   }
 })
@@ -293,6 +298,15 @@ export default defineComponent({
 .rating-point {
   font-family: 'Lobster';
   font-size: min(10vw, 60px);
+}
+
+.rating-detail-point {
+  font-family: 'Lobster';
+  font-size: min(9vw, 50px);
+}
+
+.best-tracks >>> tr:hover {
+  background: transparent !important;
 }
 
 .comment-writer {
