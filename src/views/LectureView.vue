@@ -33,7 +33,7 @@
             <a :href="'/#/lecture/' + lecture.id" style="text-decoration: none;">
               <v-sheet
                 v-if="onMobile"
-                class="lecture-sheet py-3"
+                class="lecture-sheet py-3 mx-auto"
               >
                 <v-row class="d-flex align-center justify-center">
                   <v-col cols="2" class="d-flex align-center justify-center">
@@ -42,7 +42,7 @@
                       :src="lecture.image"
                     >
                   </v-col>
-                  <v-col cols="8">
+                  <v-col class="text-center" cols="8">
                     <span class="lecture-title">
                       {{ lecture.title }}
                     </span>
@@ -63,7 +63,7 @@
               </v-sheet>
               <v-sheet
                 v-else
-                class="lecture-sheet py-3"
+                class="lecture-sheet py-3 mx-auto"
               >
                 <v-row class="d-flex align-center justify-center">
                   <v-col cols="1" class="d-flex align-center justify-center">
@@ -77,7 +77,7 @@
                       :src="lecture.image"
                     >
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="7" class="text-center">
                     <span class="lecture-title">
                       {{ lecture.title }}
                     </span>
@@ -210,6 +210,6 @@ export default defineComponent({
 
 .lecture-rating {
   font-family: 'Lobster';
-  font-size: 18px;
+  font-size: 22px;
 }
 </style>
