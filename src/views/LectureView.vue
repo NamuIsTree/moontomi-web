@@ -173,7 +173,7 @@ export default defineComponent({
   }
 })
 </script>
-<style>
+<style scoped>
 @font-face {
   font-family: "LINE Seed";
   src: url("../fonts/LINESeedKR-Rg.ttf") format("truetype");

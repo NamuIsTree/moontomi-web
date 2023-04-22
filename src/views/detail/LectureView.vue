@@ -117,7 +117,7 @@
             <v-expand-transition>
               <div
                 class="text-center"
-                v-if="lecture || lecture.rating != null || !!comment.show"
+                v-if="(!!lecture && lecture.rating != null) || !!comment.show"
               >
                 <div class="comment-rating font-weight-black">
                   <div>

@@ -26,9 +26,9 @@ const routes = [
     component: () => import("@/views/detail/LectureView")
   },
   {
-    path: "/comment/:mode(create|edit)/:id",
-    name: "comment-detail",
-    component: () => import("@/views/detail/CommentView")
+    path: "/comment/create/:id",
+    name: "create-comment",
+    component: () => import("@/views/detail/CreateCommentView")
   },
   {
     path: "/lookup",
