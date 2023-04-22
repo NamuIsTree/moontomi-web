@@ -101,7 +101,7 @@
           </div>
         </v-col>
       </v-row>
-      <infinite-loading @infinite="getLectures"></infinite-loading>
+      <infinite-loading v-if="!complete" @infinite="getLectures"></infinite-loading>
     </v-container>
   </v-container>
 </template>
