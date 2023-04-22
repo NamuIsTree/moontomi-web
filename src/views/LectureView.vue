@@ -126,6 +126,7 @@ export default defineComponent({
     return {
       selectedSortOption: sortOptions[0],
       sortOptions: sortOptions,
+      complete: false,
       onMobile: false,
       lectures: [],
       page: 1
@@ -139,6 +140,7 @@ export default defineComponent({
     toggleSortOption() {
       this.lectures = []
       this.page = 1
+      this.complete = false
     },
     handleResize() {
       if (window.innerWidth < 768) {
@@ -147,7 +149,9 @@ export default defineComponent({
         this.onMobile = false;
       }
     },
-    getLectures($state) {
+    getLectures() {
+      if (this.complete) return
+
       let vue = this
       let sortOption = vue.selectedSortOption.id.split('-')
 
@@ -160,11 +164,10 @@ export default defineComponent({
           let length = res.data.length
           vue.lectures.push(...res.data)
 
-          if (length < 10) $state.complete()
-          else {
-            $state.loaded()
-          }
-          vue.page++
+          if (length < 10) 
+            vue.complete = true
+          else 
+            vue.page++
         })
     }
   }

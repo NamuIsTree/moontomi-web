@@ -234,7 +234,7 @@ export default defineComponent({
   },
   methods: {
     postComment() {
-      alert('개발 중..')
+      window.location = '/#/comment/create/' + this.$route.params.id
     },
     getLecture() {
       let vue = this
