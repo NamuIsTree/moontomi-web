@@ -41,7 +41,7 @@
         align-center 
         class="text-center"
       >
-        <v-col class="d-flex flex-row alignf-center justify-end pr-1">
+        <v-col class="d-flex flex-row align-center justify-end pr-1">
           <img
             class="lecture-image"
             :src="lecture.image"
@@ -117,7 +117,7 @@
             <v-expand-transition>
               <div
                 class="text-center"
-                v-if="lecture.rating != null || !!comment.show"
+                v-if="lecture || lecture.rating != null || !!comment.show"
               >
                 <div class="comment-rating font-weight-black">
                   <div>
