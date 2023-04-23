@@ -52,7 +52,7 @@
     </v-container>
     <v-container fluid class="text-center" fill-width>
       <v-card
-        class="comment-card mx-auto pb-15"
+        class="comment-card pb-15"
         style="border: none;"
         variant="outlined"
       >
@@ -107,13 +107,37 @@
             label="베스트 3"
           ></v-autocomplete>
 
-          <v-textarea
-            v-model="comment"
-            label="한줄평"
-            variant="outlined"
-            auto-grow
-            rows="2"
-          ></v-textarea>
+          <div class="mx-auto">
+            <v-row>
+              <v-col class="pl-3 pr-0" cols="10">
+                <v-textarea
+                  v-model="comment"
+                  label="한줄평"
+                  variant="outlined"
+                  auto-grow
+                  rows="2"
+                ></v-textarea>
+              </v-col>
+              <v-col class="px-0" cols="2">
+                <v-btn
+                  icon="mdi-emoticon-happy-outline"
+                  variant="outlined"
+                  style="border: none;"
+                ></v-btn>
+                <v-overlay
+                  class="align-center justify-center"
+                  activator="parent"
+                  location-strategy="connected"
+                  scroll-strategy="close"
+                >
+                  <emoji-picker 
+                    @emoji-click="selectEmoji"
+                  />
+                </v-overlay>
+              </v-col>
+              <v-col cols="1"></v-col>
+            </v-row>
+          </div>
 
           <v-btn
             color="success"
@@ -122,6 +146,16 @@
           >
             평가 제출
           </v-btn>
+          <v-overlay
+            :model-value="loading"
+            class="align-center justify-center"
+          >
+            <v-progress-circular
+              color="#ff8080"
+              indeterminate
+              size="45"
+            ></v-progress-circular>
+          </v-overlay>
         </v-form>
       </v-card>
     </v-container>
@@ -130,11 +164,16 @@
   
 <script>
 import { defineComponent } from 'vue'
+import { VuemojiPicker } from 'vuemoji-picker'
 
 import axios from 'axios'
 
+
 export default defineComponent({
     name: "CreateComment",
+    components: {
+      'emoji-picker': VuemojiPicker
+    },
     data() {
       return {
         form: false,
@@ -144,6 +183,7 @@ export default defineComponent({
         rating: 0,
         bests: ['', '', ''],
         comment: '',
+        emojiOverlay: false,
         loading: false,
       }
     },
@@ -167,8 +207,11 @@ export default defineComponent({
         axios.get('https://server.moontomi.com/lecture/' + lecture_id)
           .then(function(res) {
             vue.lecture = res.data
-            console.log(vue.lecture)
           })
+      },
+      selectEmoji(emoji) {
+        console.log(emoji.unicode)
+        this.comment += emoji.unicode
       },
       onSubmit() {
         if (!this.form) return
@@ -193,7 +236,7 @@ export default defineComponent({
               setTimeout(() => {
                 alert('등록되었습니다.')
                 window.location = '/#/lecture/' + vue.lecture.id
-              }, 2000)
+              }, 1000)
             }
           })
       },
@@ -217,6 +260,7 @@ export default defineComponent({
 }
 
 .comment-card {
-  width: 500px;
+  width: min(85vw, 600px);
 }
+
 </style>
