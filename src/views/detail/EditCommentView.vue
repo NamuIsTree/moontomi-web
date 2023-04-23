@@ -145,7 +145,7 @@
             size="large"
             type="submit"
           >
-            평가 제출
+            평가 수정
           </v-btn>
           <v-overlay
             :model-value="loading"
