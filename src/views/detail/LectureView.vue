@@ -181,13 +181,11 @@
               </div>
             </v-expand-transition>
             <v-card-actions>
-              <v-btn
-              >
+              <v-btn :href="'/#/comment/edit/' + comment.id">
                 <v-icon icon="mdi-playlist-edit" size="small"></v-icon>
                 수정
               </v-btn>
-              <v-btn
-              >
+              <v-btn>
                 <v-icon icon="mdi-delete" size="small"></v-icon>
                 삭제
               </v-btn>
@@ -203,11 +201,15 @@
       </v-row>
       <v-row class="d-flex justify-center py-3">
         <v-col class="d-flex justify-center">
-          <v-btn class="comment-card post-button" height="100" @click="postComment">
-              <div class="d-flex justify-center align-center">
-                <v-icon icon="mdi-square-edit-outline"></v-icon>
-                <span class="ml-2">POST YOUR COMMENT</span>
-              </div>
+          <v-btn 
+            class="comment-card post-button" 
+            height="100" 
+            :href="'/#/comment/create/' + $route.params.id"
+          >
+            <div class="d-flex justify-center align-center">
+              <v-icon icon="mdi-square-edit-outline"></v-icon>
+              <span class="ml-2">POST YOUR COMMENT</span>
+            </div>
           </v-btn>
         </v-col>
       </v-row>
@@ -233,9 +235,6 @@ export default defineComponent({
     this.getComments()
   },
   methods: {
-    postComment() {
-      window.location = '/#/comment/create/' + this.$route.params.id
-    },
     getLecture() {
       let vue = this
       let lecture_id = vue.$route.params.id

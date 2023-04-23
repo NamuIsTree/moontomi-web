@@ -31,6 +31,11 @@ const routes = [
     component: () => import("@/views/detail/CreateCommentView")
   },
   {
+    path: "/comment/edit/:id",
+    name: "edit-comment",
+    component: () => import("@/views/detail/EditCommentView")
+  },
+  {
     path: "/lookup",
     name: "lookup-main",
     component: () => import("@/views/LookupView")
@@ -53,7 +58,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes: routes
 });
 
 export default router;

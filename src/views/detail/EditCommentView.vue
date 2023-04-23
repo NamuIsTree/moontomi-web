@@ -62,23 +62,10 @@
         >
           <v-text-field
             v-model="writer"
-            :readonly="loading"
+            :readonly="true"
             :rules="[required]"
             class="mb-2"
-            clearable
             label="닉네임"
-          ></v-text-field>
-
-          <v-text-field
-            v-model="password"
-            :readonly="loading"
-            :rules="[required, isPasswordFormat]"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="showPassword ? 'text' : 'password'"
-            @click:append="() => showPassword = !showPassword"
-            clearable
-            label="비밀번호"
-            placeholder="Enter Password"
           ></v-text-field>
 
           <div>
@@ -140,6 +127,18 @@
               </v-col>
               <v-col cols="1"></v-col>
             </v-row>
+
+            <v-text-field
+              v-model="password"
+              :readonly="loading"
+              :rules="[required, isPasswordFormat]"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPassword ? 'text' : 'password'"
+              @click:append="() => showPassword = !showPassword"
+              clearable
+              label="비밀번호"
+              placeholder="Enter Password"
+            ></v-text-field>
           </div>
 
           <v-btn
@@ -181,7 +180,8 @@ export default defineComponent({
       return {
         form: false,
         lecture: null,
-        writer: null,
+        comment_id: null,
+        writer: '나무트리',
         password: null,
         rating: 0,
         bests: ['', '', ''],
@@ -201,12 +201,29 @@ export default defineComponent({
       }
     },
     mounted() {
-      this.getLecture()
+      this.getCommentWithLecture()
     },
     methods: {
-      getLecture() {
+      getCommentWithLecture() {
         let vue = this
-        let lecture_id = vue.$route.params.id
+        let comment_id = vue.$route.params.id
+
+        axios.get('https://server.moontomi.com/comment/' + comment_id)
+          .then((res) => {
+            let comment = res.data
+
+            vue.writer = comment.writer,
+            vue.rating = comment.rating * 10,
+            vue.bests = comment.bests,
+            vue.comment = comment.comment
+
+            vue.getLecture(comment.lecture_id)
+          })
+
+          vue.comment_id = comment_id
+      },
+      getLecture(lecture_id) {
+        let vue = this
 
         axios.get('https://server.moontomi.com/lecture/' + lecture_id)
           .then(function(res) {
@@ -214,7 +231,6 @@ export default defineComponent({
           })
       },
       selectEmoji(emoji) {
-        console.log(emoji.unicode)
         this.comment += emoji.unicode
       },
       onSubmit() {
@@ -226,26 +242,29 @@ export default defineComponent({
           return vue.lecture.tracks.findIndex((track) => track === best)
         })
         let data = {
-            lecture_id: vue.lecture.id,
             rating: vue.rating,
-            writer: vue.writer,
             password: vue.password,
             picks: picks,
             text: vue.comment
           }
 
-        axios.put('https://server.moontomi.com/comment', data)
+        axios.post('https://server.moontomi.com/comment/' + vue.comment_id, data)
           .then((res) => {
-            if (res) {
+            if (res && !!res.data.done) {
               setTimeout(() => {
-                alert('평가가 등록되었습니다')
-
+                alert('수정이 완료되었습니다')
+                
                 let lecturePage = '/lecture/' + vue.lecture.id
                 vue.$router.push(lecturePage)
                           .then(() => { this.$router.go() })
               }, 1000)
             }
           })
+          .catch((err) => {
+            vue.loading = false
+            alert(err.response.data.detail)
+          })
+          
       },
       required(v) {
         return !!v || 'Field is required'
