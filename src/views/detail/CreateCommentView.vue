@@ -131,7 +131,6 @@
                   class="align-center justify-center"
                   activator="parent"
                   location-strategy="connected"
-                  scroll-strategy="close"
                 >
                   <emoji-picker 
                     @emoji-click="selectEmoji"
