@@ -72,7 +72,10 @@
           <v-text-field
             v-model="password"
             :readonly="loading"
-            :rules="[required]"
+            :rules="[required, isPasswordFormat]"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
+            @click:append="() => showPassword = !showPassword"
             clearable
             label="비밀번호"
             placeholder="Enter Password"
@@ -185,6 +188,7 @@ export default defineComponent({
         comment: '',
         emojiOverlay: false,
         loading: false,
+        showPassword: false
       }
     },
     computed: {
@@ -244,8 +248,17 @@ export default defineComponent({
           })
       },
       required(v) {
-        console.log(v)
         return !!v || 'Field is required'
+      },
+      isPasswordFormat(v) {
+        /* eslint-disable */
+        const pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
+
+        if (!pattern.test(v)) {
+          return '알파벳 대소문자, 숫자, 특수문자만 사용할 수 있습니다.'
+        }
+
+        return true
       }
     }
 })
