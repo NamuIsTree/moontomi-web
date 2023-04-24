@@ -3,7 +3,7 @@
     <v-container class="text-center" fill-height fluid>
       <v-row>
         <v-col cols="12">
-          <h4>{{ $route.params.id }} 회</h4>
+          <h4>{{ lecture.id }} 회</h4>
           <h1 class="font-italic">{{ lecture.title }}</h1>
           <h3 class="font-italic">{{ lecture.artist }} ({{ lecture.release }})</h3>
         </v-col>
@@ -46,7 +46,7 @@
       </v-row>
       <v-row>
         <v-col>
-          평가를 작성합니다
+          평가를 수정합니다
         </v-col>
       </v-row>
     </v-container>
@@ -141,9 +141,11 @@
           </div>
 
           <v-btn
-            color="success"
+            color="#ff8080"
+            class="text-white elevation-0"
             size="large"
             type="submit"
+            block
           >
             평가 수정
           </v-btn>
