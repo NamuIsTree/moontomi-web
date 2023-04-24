@@ -1,28 +1,32 @@
 <template>
   <v-container class="main">
     <v-container>
-      <v-container>
+      <v-container class="pt-0">
         <v-row>
-          <v-col cols="12" class="d-flex justify-center align-center py-5">
+          <v-col cols="12" class="d-flex justify-center align-center">
             <div class="selected-option text-center">
               {{ selectedSortOption.value }}
               <br>
+              <span v-if="selectedSortOption.subValue" class="text-grey">
+                ( {{ selectedSortOption.subValue }} )
+              </span>
+              <br>
               <v-btn-toggle
-              v-model="selectedSortOption"
-              variant="outlined"
-              divided
-              rounded="0"
-            >
-              <v-btn 
-                v-for="sortOption in sortOptions" 
-                :key="sortOption.id" 
-                :value="sortOption"
-                @click="toggleSortOption"
+                v-model="selectedSortOption"
+                variant="outlined"
+                divided
+                rounded="0"
               >
-                <v-icon :icon="sortOption.icon.main"></v-icon>
-                <v-icon :icon="sortOption.icon.sub"></v-icon>
-              </v-btn>
-            </v-btn-toggle>
+                <v-btn 
+                  v-for="sortOption in sortOptions" 
+                  :key="sortOption.id" 
+                  :value="sortOption"
+                  @click="toggleSortOption"
+                >
+                  <v-icon :icon="sortOption.icon.main"></v-icon>
+                  <v-icon :icon="sortOption.icon.sub"></v-icon>
+                </v-btn>
+              </v-btn-toggle>
             </div>
           </v-col>
         </v-row>
@@ -111,10 +115,10 @@ import InfiniteLoading from 'v3-infinite-loading'
 import axios from 'axios'
 
 const sortOptions = [
-  { id: 'id-desc', value: '음평회 내림차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
-  { id: 'id-asc', value: '음평회 오름차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-up-bold' }},
-  { id: 'rating-desc', value: '평점 내림차순', icon: { main: 'mdi-star', sub: 'mdi-arrow-down-bold' }},
-  { id: 'rating-asc', value: '평점 오름차순', icon: { main: 'mdi-star', sub: 'mdi-arrow-up-bold' }}
+  { id: 'id-desc', value: '음평회 내림차순', subValue: '', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
+  { id: 'id-asc', value: '음평회 오름차순', subValue: '', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-up-bold' }},
+  { id: 'rating-desc', value: '평점 내림차순', subValue: '컴필레이션 제외', icon: { main: 'mdi-star', sub: 'mdi-arrow-down-bold' }},
+  { id: 'rating-asc', value: '평점 오름차순', subValue: '컴필레이션 제외', icon: { main: 'mdi-star', sub: 'mdi-arrow-up-bold' }}
 ]
 
 export default defineComponent({
