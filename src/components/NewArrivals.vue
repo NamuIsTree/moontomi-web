@@ -174,7 +174,7 @@ main {
 
 @media (min-width: 1536px) {
   .horizontal {
-    --count: 4.4;
+    --count: 3.4;
   }
 }
 </style>
