@@ -155,7 +155,7 @@ export default {
 .main {
   font-family: 'LINE Seed';
   padding-bottom: 100px;
-  max-width: 1400px;
+  max-width: 1200px;
   overflow-x: hidden;
 }
 

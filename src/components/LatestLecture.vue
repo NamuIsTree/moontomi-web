@@ -75,7 +75,7 @@ export default defineComponent({
 
 .background-image {
     position: relative;
-    height: min(max(30vw, 200px), 500px);
+    height: min(max(30vw, 200px), 400px);
 
     filter: brightness(80%) blur(0.6vw);
     transform: scale(1.1);
@@ -83,7 +83,7 @@ export default defineComponent({
 
 .contents {
     position: absolute;
-    height: min(max(30vw, 200px), 500px);
+    height: min(max(30vw, 200px), 400px);
     top: min(max(1vw, 14px), 30px);
 }
 

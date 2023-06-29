@@ -59,7 +59,7 @@ export default defineComponent({
     padding: 5px;
     height: 30vw;
     min-height: 230px;
-    max-height: 500px;
+    max-height: 400px;
 }
   
 .carousel__viewport {
@@ -108,11 +108,11 @@ export default defineComponent({
     position: relative;
 
     width: 24vw;
-    max-width: 400px;
+    max-width: 320px;
     min-width: 180px;
 
     height: 24vw;
-    max-height: 400px;
+    max-height: 320px;
     min-height: 180px;
 
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 2px -2px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
@@ -123,11 +123,11 @@ export default defineComponent({
     position: absolute;
 
     width: 24vw;
-    max-width: 400px;
+    max-width: 320px;
     min-width: 180px;
     
     height: 24vw;
-    max-height: 400px;
+    max-height: 320px;
     min-height: 180px;
 
     left: 0;
