@@ -1,0 +1,1 @@
+<!-- Lecture 추가 페이지: Album mapping, Season 설정 및 추가를 담당 -->
