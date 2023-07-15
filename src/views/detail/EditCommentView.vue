@@ -209,7 +209,7 @@ export default defineComponent({
         let vue = this
         let comment_id = vue.$route.params.id
 
-        axios.get('https://server.moontomi.com/comment/' + comment_id)
+        axios.get(this.serverUrl + '/comment/' + comment_id)
           .then((res) => {
             let comment = res.data
 
@@ -226,7 +226,7 @@ export default defineComponent({
       getLecture(lecture_id) {
         let vue = this
 
-        axios.get('https://server.moontomi.com/lecture/' + lecture_id)
+        axios.get(this.serverUrl + '/lecture/' + lecture_id)
           .then(function(res) {
             vue.lecture = res.data
           })
@@ -249,7 +249,7 @@ export default defineComponent({
             text: vue.comment
           }
 
-        axios.post('https://server.moontomi.com/comment/' + vue.comment_id, data)
+        axios.post(this.serverUrl + '/comment/' + vue.comment_id, data)
           .then((res) => {
             if (res && !!res.data.done) {
               setTimeout(() => {

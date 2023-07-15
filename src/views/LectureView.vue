@@ -162,7 +162,7 @@ export default defineComponent({
       let sortBy = sortOption[0]
       let order = sortOption[1]
 
-      axios.get('https://server.moontomi.com/lecture/list?page=' 
+      axios.get(this.serverUrl + '/lecture/list?page=' 
         + vue.page + '&limit=15&sort_by=' + sortBy + '&order=' + order)
         .then((res) => {
           let length = res.data.length
