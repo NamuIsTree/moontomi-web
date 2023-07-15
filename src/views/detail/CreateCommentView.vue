@@ -207,7 +207,7 @@ export default defineComponent({
         let vue = this
         let lecture_id = vue.$route.params.id
 
-        axios.get('https://server.moontomi.com/lecture/' + lecture_id)
+        axios.get(this.serverUrl + '/lecture/' + lecture_id)
           .then(function(res) {
             vue.lecture = res.data
           })
@@ -233,7 +233,7 @@ export default defineComponent({
             text: vue.comment
           }
 
-        axios.put('https://server.moontomi.com/comment', data)
+        axios.put(this.serverUrl + '/comment', data)
           .then((res) => {
             if (res) {
               setTimeout(() => {
