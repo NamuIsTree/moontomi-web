@@ -95,8 +95,16 @@
                       </span>
                     </span>
                   </v-col>
-                  <v-col cols="2" class="lecture-rating d-flex align-center justify-center">
+                  <v-col v-if="lecture.rating" cols="2" class="lecture-rating d-flex align-center justify-center">
                     {{ lecture.rating.toFixed(2) }}
+                  </v-col>
+                  <v-col v-else cols="2" class="lecture-rating d-flex align-center justify-center">
+                    <v-chip
+                      class="ma-2 d-flex align-center justify-center"
+                      color="success"
+                      variant="outlined"
+                      style="border-width: 2px"
+                    >OPEN</v-chip>
                   </v-col>
                 </v-row>
               </v-sheet>
