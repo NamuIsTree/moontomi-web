@@ -5,12 +5,12 @@
   >
     <a class="text-decoration-none" :href="'/#/lecture/' + comment.lecture_id">
       <v-row class="d-flex align-center justify-center pt-0">
-        <v-col cols="2" class="album-title d-flex align-center justify-start">
+        <v-col cols="2" class="d-flex align-center justify-start">
           <span>
             <strong>#{{ index }}</strong>
           </span>
         </v-col>
-        <v-col cols="10" class="d-flex align-center justify-end">
+        <v-col cols="10" class="album-title d-flex align-center justify-end">
           <span class="font-italic">&nbsp;{{ comment.lecture_id }}회 - {{ comment.album.title }}</span>
         </v-col>
       </v-row>
@@ -72,6 +72,7 @@ export default defineComponent({
   white-space: nowrap !important;
   overflow: hidden;
   text-overflow: ellipsis !important;
+  text-align: end;
 }
 
 .comment-text {
