@@ -3,7 +3,7 @@
     <v-container v-if="lecture != null" class="text-center" fill-height fluid>
       <v-row>
         <v-col cols="12">
-          <h4>{{ $route.params.id }} 회</h4>
+          <h4>{{ lecture.id }} 회</h4>
           <h4 v-if="lecture.date" style="color: #808080">{{ lecture.date }}</h4>
           <h1 class="font-italic">{{ lecture.title }}</h1>
           <h3 class="font-italic">{{ lecture.artist }} ({{ lecture.release }})</h3>
