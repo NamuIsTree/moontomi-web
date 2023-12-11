@@ -341,6 +341,7 @@ export default defineComponent({
 .comment-text {
   font-size: min(max(1.2vw, 16px), 18px) !important;
   word-break: keep-all;
+  white-space: pre-line;
 }
 
 .post-button {
