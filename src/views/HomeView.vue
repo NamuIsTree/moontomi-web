@@ -123,7 +123,7 @@ export default {
     },
     getTopAlbums: function() {
       let vue = this
-      axios.get('https://server.moontomi.com/lecture/top')
+      axios.get(this.serverUrl + '/lecture/top')
       .then(function(res) {
         let data = res.data
         vue.upperTop = data['upper_top']
@@ -134,7 +134,7 @@ export default {
     },
     getLatestLecture: function() {
       let vue = this
-      axios.get('https://server.moontomi.com/lecture/latest')
+      axios.get(this.serverUrl + '/lecture/latest')
       .then(function(res) {
         vue.latestLecture = res.data
       })

@@ -60,8 +60,16 @@
                       </span>
                     </span>
                   </v-col>
-                  <v-col cols="2" class="lecture-rating d-flex align-center justify-center">
+                  <v-col v-if="lecture.rating" cols="2" class="lecture-rating d-flex align-center justify-center">
                     {{ lecture.rating.toFixed(2) }}
+                  </v-col>
+                  <v-col v-else cols="2" class="lecture-rating d-flex align-center justify-center">
+                    <v-chip
+                      class="ma-2 d-flex align-center justify-center"
+                      color="success"
+                      variant="outlined"
+                      style="border-width: 2px"
+                    >OPEN</v-chip>
                   </v-col>
                 </v-row>
               </v-sheet>
@@ -95,8 +103,16 @@
                       </span>
                     </span>
                   </v-col>
-                  <v-col cols="2" class="lecture-rating d-flex align-center justify-center">
+                  <v-col v-if="lecture.rating" cols="2" class="lecture-rating d-flex align-center justify-center">
                     {{ lecture.rating.toFixed(2) }}
+                  </v-col>
+                  <v-col v-else cols="2" class="lecture-rating d-flex align-center justify-center">
+                    <v-chip
+                      class="ma-2 d-flex align-center justify-center"
+                      color="success"
+                      variant="outlined"
+                      style="border-width: 2px"
+                    >OPEN</v-chip>
                   </v-col>
                 </v-row>
               </v-sheet>
@@ -162,7 +178,7 @@ export default defineComponent({
       let sortBy = sortOption[0]
       let order = sortOption[1]
 
-      axios.get('https://server.moontomi.com/lecture/list?page=' 
+      axios.get(this.serverUrl + '/lecture/list?page=' 
         + vue.page + '&limit=15&sort_by=' + sortBy + '&order=' + order)
         .then((res) => {
           let length = res.data.length

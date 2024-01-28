@@ -7,7 +7,10 @@ import { loadFonts } from './plugins/webfontloader'
 
 loadFonts()
 
-createApp(App)
+const app = createApp(App)
+app.config.globalProperties.serverUrl = 'https://server.moontomi.com'
+
+app
   .use(router)
   .use(store)
   .use(vuetify)
