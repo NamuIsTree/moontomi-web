@@ -17,14 +17,41 @@
       :search="searchText"
       :page="params.currentPage"
       :pageSize="params.pagesize"
+      :pageSizeOptions="pageSizeOptions"
       @change="changeServer"
       skin="bh-table-hover"
     >
       <template #album_id="data">
-        <strong>#{{ data.value.album_id }}</strong>
+        <strong>#{{ data.value.id }}</strong>
       </template>
       <template #image="data">
-        <img :src="'https://server.moontomi.com/image/' + data.value.image_id" width='70px' />
+        <img :src="data.value.image" width='70px' />
+      </template>
+      <template #title="data">
+        <span class="album-title">{{ data.value.title }}</span>
+      </template>
+      <template #artist="data">
+        <span class="album-artist">{{ data.value.artist }}</span>
+      </template>
+      <template #nation="data">
+        <span class="album-nation">{{ data.value.nation }}</span>
+      </template>
+      <template #action="data">
+        <v-btn-group>
+          <div hidden>{{ data.id }}</div>
+          <v-btn-group>
+            <v-tooltip text="데이터 수정">
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-content-save-edit" location="top" color="success"></v-btn>
+              </template>
+            </v-tooltip>
+            <v-tooltip text="삭제">
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-delete" location="top" color="red-darken-4"></v-btn>
+              </template>
+            </v-tooltip>
+          </v-btn-group>
+        </v-btn-group>
       </template>
     </data-table>
   </v-container>
@@ -41,12 +68,13 @@ export default defineComponent({
   data() {
     return {
       cols: [
-        { field: 'album_id', title: 'ID', minWidth: '5', maxWidth: '5', isUnique: true },
+        { field: 'album_id', title: 'ID', isUnique: true },
         { field: 'image', title: '앨범커버' },
-        { field: 'title', title: '앨범명', minWidth: '20', maxWidth: '20' },
-        { field: 'artist.name', title: '아티스트명', minWidth: '15', maxWidth: '15' },
-        { field: 'artist.nation', title: '국가', minWidth: '8', maxWidth: '8' },
-        { field: 'release', title: '발매년도', minWidth: '8', maxWidth: '8' }
+        { field: 'title', title: '앨범명' },
+        { field: 'artist', title: '아티스트명' },
+        { field: 'nation', title: '국가' },
+        { field: 'release', title: '발매년도' },
+        { field: 'action', title: 'ACTION' }
       ],
       rows: [],
       searchText: '',
@@ -56,7 +84,8 @@ export default defineComponent({
         currentPage: 1,
         pagesize: 10,
         search: ''
-      }
+      },
+      pageSizeOptions: [10, 20, 30],
     }
   },
   components: {
@@ -73,7 +102,16 @@ export default defineComponent({
       axios.get(this.serverUrl + '/album/list?page=' + vue.params.currentPage + '&limit=' + vue.params.pagesize + '&order=asc&keyword=' + vue.params.search)
         .then(function(res) {
           vue.totalRows = res.data['total_count']
-          vue.rows = res.data['items']
+          vue.rows = res.data['items'].map(item => {
+            return {
+              'id': item.album_id,
+              'image': 'https://server.moontomi.com/image/' + item.image_id,
+              'title': item.title,
+              'artist': item.artist.name,
+              'nation': item.artist.nation,
+              'release': item.release
+            }
+          })
         })
 
       this.loading = false
@@ -102,5 +140,29 @@ export default defineComponent({
 
 .album-data-table {
   font-family: 'LINE Seed';
+}
+
+.album-title {
+  display: block !important;
+  white-space: nowrap !important;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+}
+
+.album-artist {
+  display: block !important;
+  white-space: nowrap !important;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+}
+
+.album-nation {
+  display: block !important;
+  white-space: nowrap !important;
+  width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
 }
 </style>
