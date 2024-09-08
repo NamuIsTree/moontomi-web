@@ -1,12 +1,27 @@
 <template>
   <v-container class="mb-5">
-    <v-text-field
-      class="pb-0"
-      label="앨범명 검색"
-      type="text"
-      v-model="params.search"
-      v-on:keyup.enter="search"
-    ></v-text-field>
+    <v-row>
+      <v-col cols="10">
+        <v-text-field
+          class="pb-0"
+          label="앨범명 검색"
+          type="text"
+          v-model="params.search"
+          v-on:keyup.enter="search"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="2">
+        <a href="/db/create/album">
+          <v-btn
+            size="large"
+            prepend-icon="mdi-plus-box"
+            height="55"
+            color="#242d3c"
+            variant="outlined"
+          >NEW</v-btn>
+        </a>
+      </v-col>
+    </v-row>
     <data-table 
       class="album-data-table" 
       :rows="rows"
@@ -43,11 +58,6 @@
             <v-tooltip text="데이터 수정">
               <template v-slot:activator="{ props }">
                 <v-btn v-bind="props" icon="mdi-content-save-edit" location="top" color="success"></v-btn>
-              </template>
-            </v-tooltip>
-            <v-tooltip text="삭제">
-              <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" icon="mdi-delete" location="top" color="red-darken-4"></v-btn>
               </template>
             </v-tooltip>
           </v-btn-group>
@@ -165,4 +175,10 @@ export default defineComponent({
   overflow: hidden;
   text-overflow: ellipsis !important;
 }
+
+.bh-pagination
+.bh-page-item.bh-active {
+  background-color: #242d3c !important;
+}
+
 </style>

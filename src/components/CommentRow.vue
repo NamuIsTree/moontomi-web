@@ -3,7 +3,7 @@
   <v-container
     class="comment-sheet px-1"
   >
-    <a class="text-decoration-none" :href="'/#/lecture/' + comment.lecture_id">
+    <a class="text-decoration-none" :href="'/lecture/' + comment.lecture_id">
       <v-row class="d-flex align-center justify-center pt-0">
         <v-col cols="2" class="d-flex align-center justify-start">
           <span>

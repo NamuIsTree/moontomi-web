@@ -1,3 +1,50 @@
-<!-- Album을 추가하는 Admin 페이지 -->
-<!-- 장르도 여기서 추가할 수 있어야할 듯? -->
-<!-- 근데 그냥 Open해도 될 것 같긴 하다 (플레이리스트, 리뷰쓸 때 추가해야할테니까?) -->
+<template>
+    <div class="main">
+        <v-container class="album-create-main">
+            <v-row>
+                앨범을 등록합니다.
+            </v-row>
+            <v-row>
+                <input type="file" id="upload-cover" hidden />
+                <label for="upload-cover">
+                    <img 
+                        :class="{ 'on-hover': isHovering }"
+                        src="/default/default_image.svg" width="150"/>
+                </label>
+            </v-row>
+        </v-container>
+    </div>
+</template>
+
+<script scoped>
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+    name: 'CreateAlbumView',
+    data() {
+        return {
+            album: {
+                title: '',
+                artist_id: null,
+                image_id: null,
+                tracks: [],
+                release: ''
+            }
+        }
+    }
+})
+
+</script>
+
+<style scoped>
+@font-face {
+  font-family: "LINE Seed";
+  src: url("../../fonts/LINESeedKR-Rg.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+.album-create-main {
+    font-family: 'LINE Seed';
+}
+</style>

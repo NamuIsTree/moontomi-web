@@ -181,7 +181,7 @@
               </div>
             </v-expand-transition>
             <v-card-actions>
-              <v-btn :href="'/#/comment/edit/' + comment.id">
+              <v-btn :href="'/comment/edit/' + comment.id">
                 <v-icon icon="mdi-playlist-edit" size="small"></v-icon>
                 수정
               </v-btn>
@@ -204,7 +204,7 @@
           <v-btn 
             class="comment-card post-button" 
             height="100" 
-            :href="'/#/comment/create/' + $route.params.id"
+            :href="'/comment/create/' + $route.params.id"
           >
             <div class="d-flex justify-center align-center">
               <v-icon icon="mdi-square-edit-outline"></v-icon>

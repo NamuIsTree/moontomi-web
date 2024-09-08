@@ -46,6 +46,11 @@ const routes = [
     component: () => import("@/views/ArchiveView")
   },
   {
+    path: "/db/create/album",
+    name: "create-album",
+    component: () => import("@/views/admin/CreateAlbumView")
+  },
+  {
     path: "/single/:id",
     name: "single-detail",
     component: () => import("@/views/detail/SingleView")
