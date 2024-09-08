@@ -77,7 +77,7 @@
           { title: "칼럼", icon: "mdi-newspaper-variant-outline", path: "/reviews"},
           { title: "음평회", icon: "mdi-album", path: "/lectures"},
           { title: "둘러보기", icon: "mdi-history", path: "/lookup"},
-          { title: "아카이브", icon: "mdi-music-circle-outline", path: "/singles"}
+          { title: "아카이브", icon: "mdi-music-circle-outline", path: "/archive"}
         ]
       }
     },

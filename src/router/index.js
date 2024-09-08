@@ -51,6 +51,11 @@ const routes = [
     component: () => import("@/views/detail/SingleView")
   },
   {
+    path: '/archive',
+    name: 'archive-main',
+    component: () => import("@/views/ArchiveView")
+  },
+  {
     path: "/:pathMatch(.*)*",
     component: () => import("@/views/NotFoundView")
   }
