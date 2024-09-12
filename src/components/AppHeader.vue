@@ -111,7 +111,7 @@ export default {
 
 [class*='app-header'] {
   position: fixed;
-  z-index: 10;
+  z-index: 1000;
   text-align: center;
   background-color: #242d3c;
   font-family: "Bayaters Stamp";
