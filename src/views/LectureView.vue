@@ -34,7 +34,7 @@
       <v-row>
         <v-col>
           <div v-for="(lecture, index) in lectures" :key="lecture.id">
-            <a :href="'/#/lecture/' + lecture.id" style="text-decoration: none;">
+            <a :href="'/lecture/' + lecture.id" style="text-decoration: none;">
               <v-sheet
                 v-if="onMobile"
                 class="lecture-sheet py-3 mx-auto"

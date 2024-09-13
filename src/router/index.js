@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
@@ -56,13 +56,18 @@ const routes = [
     component: () => import("@/views/ArchiveView")
   },
   {
+    path: '/archive/:id',
+    name: 'archive-detail',
+    component: () => import("@/views/ArchiveView")
+  },
+  {
     path: "/:pathMatch(.*)*",
     component: () => import("@/views/NotFoundView")
   }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: routes
 });
 

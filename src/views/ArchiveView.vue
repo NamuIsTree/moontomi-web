@@ -1,9 +1,9 @@
 <template>
-    <v-container class="main d-flex justify-center">
-        <v-container v-bind:class="{'shrink-selected': shrink}" class="selected-archive-wrapper align-center elevation-8" v-if="selected != null" fixed>
-            <v-row>
+    <v-container class="main d-flex justify-center" v-if="selected" >
+        <v-container v-bind:class="{'shrink-selected': shrink}" class="selected-archive-wrapper align-center elevation-8" fixed>
+            <v-row class="selected-archive-meta">
                 <v-col class="d-flex justify-start" style="padding-top: 0px !important; padding-bottom: 0px !important;">
-                    &nbsp;&nbsp; #{{ selected.id.toString().padStart(3, '0') }}
+                    &nbsp;&nbsp; #{{ selected.id.toString().padStart(3, '0') }} <span class="selected-archive-writer pl-2">by [ {{ selected.writer }} ]</span>
                 </v-col>
                 <v-col class="d-flex justify-end" style="padding-top: 0px !important; padding-bottom: 0px !important;">
                     {{ selected.date }} &nbsp;
@@ -21,11 +21,16 @@
                     <v-col class="justify-center" cols="8">
                         <v-container class="selected-archive-content">
                             <v-row>
-                                <v-col cols="2">
+                                <v-col cols="4">
                                     <v-chip class="archive-type-chip" v-if="selected.item.type == 'album'" color="green" variant="outlined" size="small">ALBUM</v-chip>
                                     <v-chip class="archive-type-chip" v-else color="orange" variant="outlined" size="small">SINGLE</v-chip>
+                                    <v-tooltip text="공유 링크 복사">
+                                        <template v-slot:activator="{ props }">
+                                            <v-icon v-bind="props" class="pl-2" icon="mdi-share-variant-outline" @click="copyLink"></v-icon>
+                                        </template>
+                                    </v-tooltip>
                                 </v-col>
-                                <v-col class="d-flex justify-end" cols="10">
+                                <v-col class="d-flex justify-end" cols="8">
                                     <v-chip
                                         class="selected-archive-genre mx-1"
                                         size="small"
@@ -69,24 +74,27 @@
                     </v-col>
                 </v-row>
             </transition>
-            <!-- <v-row class="selected-archive-writer d-flex justify-end">
-                    recommended by [ {{ selected.writer }} ] &nbsp;&nbsp;&nbsp;
-            </v-row> -->
         </v-container>
         <v-row v-bind:class="{'shrink-select-group': shrink}" class="select-group">
             <v-container>
                 <v-row>
                     <v-col cols="3">
-                        <v-select density="comfortable" label="정렬 기준"></v-select>
+                        <v-select 
+                            density="comfortable" 
+                            label="정렬 기준"
+                            :model-value="sortOption.label"
+                            :items="sortOptions"
+                            @update:model-value="updateSortOption"
+                        ></v-select>
                     </v-col>
                     <v-col cols="3">
-                        <v-select density="comfortable" label="작성연도"></v-select>
+                        <v-select density="comfortable" label="별점" no-data-text="아직 지원하지 않습니다."></v-select>
                     </v-col>
                     <v-col cols="3">
-                        <v-select density="comfortable" label="별점"></v-select>
+                        <v-select density="comfortable" label="장르" no-data-text="아직 지원하지 않습니다."></v-select>
                     </v-col>
-                    <v-col cols="3">
-                        <v-select density="comfortable" label="장르"></v-select>
+                    <v-col>
+                        <v-text-field density="comfortable" label="검색" disabled></v-text-field>
                     </v-col>
                 </v-row>
             </v-container>
@@ -136,7 +144,15 @@
 </template>
 <script>
 import { defineComponent } from 'vue'
+import useClipboard from 'vue-clipboard3'
 import axios from 'axios'
+
+const sortOptions = [
+    { title: '최신순', value: { label: '최신순', code: 'desc'} },
+    { title: '작성순', value: { label: '작성순', code: 'asc'} }
+]
+
+const { toClipboard } = useClipboard()
 
 export default defineComponent({
     name: 'ArchiveView',
@@ -144,6 +160,8 @@ export default defineComponent({
         return {
             archives: [],
             shrink: false,
+            sortOption: sortOptions[0].value,
+            sortOptions: sortOptions,
             initialImage: null,
             selected: null
         }
@@ -158,16 +176,31 @@ export default defineComponent({
             }
         });
 
-        this.getArchives();
+        let vue = this
+        let archive_id = vue.$route.params.id
+        
+        if (archive_id) {
+            axios.get(vue.serverUrl + '/archive/' + archive_id)
+                .then(function(res) {
+                    vue.selected = res.data
+                })
+
+            this.getArchives(false);
+        } else {
+            this.getArchives(true);
+        }
     },
     methods: {
-        getArchives() {
+        getArchives(updateSelectedArchive) {
             let vue = this
+            let path = '/archive/list?page=1&limit=50&order=' + vue.sortOption.code + '&min_rating=0&max_rating=1000'
             
-            axios.get(this.serverUrl + '/archive/list?page=1&limit=50&order=asc&min_rating=0&max_rating=1000')
+            axios.get(vue.serverUrl + path)
                 .then(function(res) {
                     vue.archives = res.data
-                    vue.selectArchive(res.data[0])
+                    if (updateSelectedArchive) {
+                        vue.selectArchive(res.data[0])
+                    }
                 })
         },
         selectArchive(item) {
@@ -189,6 +222,15 @@ export default defineComponent({
             el.style.transition = 'opacity 1s';
             el.style.opacity = 0;
             done();
+        },
+        async copyLink() {
+            let vue = this;
+            await toClipboard('https://moontomi.com/archive/' + vue.selected.id)
+            alert('공유 링크가 복사되었습니다.')
+        },
+        updateSortOption(v) {
+            this.sortOption = v;
+            this.getArchives(false);
         }
     }
 })
@@ -245,6 +287,14 @@ export default defineComponent({
     transition-timing-function: cubic-bezier(0.295, 0.695, 0.290, 1.005);
 }
 
+.selected-archive-meta {
+    opacity: 0.7;
+}
+
+.selected-archive-writer {
+    font-family: 'LINE Seed';
+}
+
 .select-group {
     display: inline-block;
     position: fixed;
@@ -291,35 +341,8 @@ export default defineComponent({
   }
 }
 
-.selected-archive-writer {
-    font-family: 'LINE Seed';
-}
-
 .selected-archive-content {
     height: 300px;
-}
-
-/* .selected-archive-title {
-} */
-
-/* use this one to move from left to right direction */
-@keyframes move-left-to-right {
-    from {
-        transform: translateX(-50%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-/* use this one to move from right to left direction */
-@keyframes move-right-to-left {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
-    }
 }
 
 .selected-archive-genre {
