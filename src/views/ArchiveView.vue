@@ -42,18 +42,18 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="6">
+                                <v-col cols="8">
                                     <h1 class="selected-archive-title">{{ selected.item.title }}</h1>
-                                    <h3>{{ selected.item.artist }} ({{ selected.item.release }})</h3>
+                                    <h3 style="opacity: 0.7;">{{ selected.item.artist }} ({{ selected.item.release }})</h3>
                                 </v-col>
-                                <v-col class="d-flex justify-end" cols="6">
+                                <v-col class="d-flex justify-end" cols="4">
                                     <v-rating
                                         :model-value="selected.rating"
                                         color="yellow-darken-4"
                                         active-color="yellow-darken-4"
                                         half-increments
                                         readonly
-                                        size="50"
+                                        size="41"
                                     ></v-rating>
                                     <br>
                                 </v-col>
