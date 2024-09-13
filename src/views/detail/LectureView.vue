@@ -181,7 +181,7 @@
               </div>
             </v-expand-transition>
             <v-card-actions>
-              <v-btn :href="'/#/comment/edit/' + comment.id">
+              <v-btn :href="'/comment/edit/' + comment.id">
                 <v-icon icon="mdi-playlist-edit" size="small"></v-icon>
                 수정
               </v-btn>

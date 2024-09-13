@@ -9,6 +9,7 @@ loadFonts()
 
 const app = createApp(App)
 app.config.globalProperties.serverUrl = 'https://server.moontomi.com'
+// app.config.globalProperties.serverUrl = 'http://localhost:8000'
 
 app
   .use(router)

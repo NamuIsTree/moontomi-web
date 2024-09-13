@@ -37,7 +37,7 @@
       <v-btn
         class="link-button font-weight-black"
         variant="text"
-        :href="'/#/lecture/' + album.id"
+        :href="'/lecture/' + album.id"
       >
         GO TO COMMENT >>
       </v-btn>
