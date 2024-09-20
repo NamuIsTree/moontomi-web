@@ -209,7 +209,7 @@
           <v-btn 
             class="comment-card post-button" 
             height="100" 
-            :href="'/#/comment/create/' + $route.params.id"
+            :href="'/comment/create/' + $route.params.id"
           >
             <div class="d-flex justify-center align-center">
               <v-icon icon="mdi-square-edit-outline"></v-icon>
