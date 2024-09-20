@@ -1,6 +1,6 @@
 <template>
-  <v-container class="main">
-    <v-container v-if="lecture != null" class="text-center" fill-height fluid>
+  <v-container class="main" v-if="lecture != null">
+    <v-container class="text-center" fill-height fluid>
       <v-row>
         <v-col cols="12">
           <h4>{{ lecture.id }} 회</h4>
@@ -92,6 +92,11 @@
         </v-col>
       </v-row>
     </v-container>
+    <div v-if="lecture.archive" class="d-flex justify-center" style="width: '100%';">
+      <v-btn class="archive-button font-weight-black" color="#242d3c" variant="text" :href="'/archive/' + lecture.archive.id" style="margin-left: -1px !important; margin-bottom: -10px !important">
+        <span>GO TO ARCHIVE >></span>
+      </v-btn>
+    </div>
     <v-container fluid>
       <v-row
         class="d-flex justify-center py-3"
@@ -329,6 +334,16 @@ export default defineComponent({
   border: 1px solid;
   border-color: #BDC0C4;
   border-radius: 20px;
+}
+
+.archive-button {
+  width: 60vw;
+  min-width: 320px;
+  max-width: 800px;
+}
+
+.archive-button:hover {
+  background-color: #eff1f0;
 }
 
 .best-track-row td {
