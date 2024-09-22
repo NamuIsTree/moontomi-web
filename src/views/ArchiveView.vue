@@ -170,12 +170,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="archive-wrapper" v-if="!complete" style="width: 100% !important;">
+                    <infinite-loading class="archive-box" style="width: 100% !important;" @infinite="getArchives(false)"></infinite-loading>
+                </div>
             </v-container>
         </v-row>
     </v-container>
 </template>
 <script>
 import { defineComponent } from 'vue'
+import InfiniteLoading from 'v3-infinite-loading'
 import useClipboard from 'vue-clipboard3'
 import axios from 'axios'
 
@@ -188,6 +192,9 @@ const { toClipboard } = useClipboard()
 
 export default defineComponent({
     name: 'ArchiveView',
+    components: {
+        'infinite-loading': InfiniteLoading
+    },
     data() {
         return {
             archives: [],
@@ -197,7 +204,9 @@ export default defineComponent({
             initialImage: null,
             onPad: false,
             onMobile: false,
-            selected: null
+            selected: null,
+            complete: false,
+            page: 1
         }
     },
     mounted() {
@@ -230,14 +239,20 @@ export default defineComponent({
     methods: {
         getArchives(updateSelectedArchive) {
             let vue = this
-            let path = '/archive/list?page=1&limit=50&order=' + vue.sortOption.code + '&min_rating=0&max_rating=1000'
+            let path = '/archive/list?page=' + vue.page + '&limit=12&order=' + vue.sortOption.code + '&min_rating=0&max_rating=1000'
             
             axios.get(vue.serverUrl + path)
                 .then(function(res) {
-                    vue.archives = res.data
+                    let length = res.data.length
+                    vue.archives.push(...res.data)
                     if (updateSelectedArchive) {
                         vue.selectArchive(res.data[0])
                     }
+
+                    if (length < 12)
+                        vue.complete = true
+                    else
+                        vue.page++
                 })
         },
         selectArchive(item) {
@@ -266,8 +281,14 @@ export default defineComponent({
             alert('공유 링크가 복사되었습니다.')
         },
         updateSortOption(v) {
+            if (v === this.sortOption) {
+                return;
+            }
+
+            this.archives = []
+            this.complete = false
+            this.page = 1
             this.sortOption = v;
-            this.getArchives(false);
         },
         handleResize() {
             this.onMobile = (window.innerWidth < 768)
