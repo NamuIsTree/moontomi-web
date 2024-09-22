@@ -172,8 +172,8 @@
                 </div>
             </v-container>
             <div class="archive-wrapper" v-if="!complete && !loading" style="width: 100% !important;">
-                    <infinite-loading class="archive-box" style="width: 100% !important;" @infinite="getArchives(false)"></infinite-loading>
-                </div>
+                <infinite-loading class="archive-box" style="width: 100% !important;" @infinite="getArchives(false)"></infinite-loading>
+            </div>
         </v-row>
     </v-container>
 </template>
