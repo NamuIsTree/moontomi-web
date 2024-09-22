@@ -170,10 +170,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="archive-wrapper" v-if="!complete" style="width: 100% !important;">
-                    <infinite-loading class="archive-box" style="width: 100% !important;" @infinite="getArchives(false)"></infinite-loading>
-                </div>
             </v-container>
+            
+            <div class="archive-wrapper" v-if="!complete && !loading" style="width: 100% !important;">
+                    <infinite-loading class="archive-box" style="width: 100% !important; background-color: red;" @infinite="getArchives(false)"></infinite-loading>
+                </div>
         </v-row>
     </v-container>
 </template>
@@ -206,6 +207,7 @@ export default defineComponent({
             onMobile: false,
             selected: null,
             complete: false,
+            loading: false,
             page: 1
         }
     },
@@ -238,22 +240,33 @@ export default defineComponent({
     },
     methods: {
         getArchives(updateSelectedArchive) {
+            if (this.loading) {
+                setTimeout(() => { alert('hi!') }, 2000);
+            }
+
             let vue = this
+            vue.loading = true
+
+            let page = vue.page
             let path = '/archive/list?page=' + vue.page + '&limit=12&order=' + vue.sortOption.code + '&min_rating=0&max_rating=1000'
             
             axios.get(vue.serverUrl + path)
-                .then(function(res) {
-                    let length = res.data.length
-                    vue.archives.push(...res.data)
-                    if (updateSelectedArchive) {
-                        vue.selectArchive(res.data[0])
-                    }
+            .then(function(res) {
+                let length = res.data.length
+                vue.archives.push(...res.data)
+                if (updateSelectedArchive) {
+                    vue.selectArchive(res.data[0])
+                }
 
-                    if (length < 12)
-                        vue.complete = true
-                    else
-                        vue.page++
-                })
+                if (length < 12)
+                    vue.complete = true
+                else
+                    vue.page = page + 1
+            })
+            .then(() => {
+                vue.loading = false
+            })
+
         },
         selectArchive(item) {
             this.selected = item;
@@ -285,14 +298,17 @@ export default defineComponent({
                 return;
             }
 
-            this.archives = []
-            this.complete = false
-            this.page = 1
+            this.archives = [];
+            this.page = 1;
+            this.complete = false;
             this.sortOption = v;
         },
         handleResize() {
             this.onMobile = (window.innerWidth < 768)
             this.onPad = (window.innerWidth >= 768 && window.innerWidth < 1280)
+        },
+        trigger() {
+            alert('complete=' + this.complete + ', page=' + this.page)
         }
     }
 })
