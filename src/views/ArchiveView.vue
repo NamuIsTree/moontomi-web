@@ -714,7 +714,8 @@ export default defineComponent({
     }
 
     .shrink-canvas {
-        top: 80px !important;
+        top: 60px !important;
+        height: 420px;
     }
 
     @keyframes shimmer {
