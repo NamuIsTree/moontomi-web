@@ -171,11 +171,15 @@
                     </div>
                 </div>
             </v-container>
+            <div class="archive-wrapper" v-if="!complete && !loading" style="width: 100% !important;">
+                <infinite-loading class="archive-box" style="width: 100% !important;" @infinite="getArchives(false)"></infinite-loading>
+            </div>
         </v-row>
     </v-container>
 </template>
 <script>
 import { defineComponent } from 'vue'
+import InfiniteLoading from 'v3-infinite-loading'
 import useClipboard from 'vue-clipboard3'
 import axios from 'axios'
 
@@ -188,6 +192,9 @@ const { toClipboard } = useClipboard()
 
 export default defineComponent({
     name: 'ArchiveView',
+    components: {
+        'infinite-loading': InfiniteLoading
+    },
     data() {
         return {
             archives: [],
@@ -197,7 +204,10 @@ export default defineComponent({
             initialImage: null,
             onPad: false,
             onMobile: false,
-            selected: null
+            selected: null,
+            complete: false,
+            loading: false,
+            page: 1
         }
     },
     mounted() {
@@ -229,16 +239,33 @@ export default defineComponent({
     },
     methods: {
         getArchives(updateSelectedArchive) {
+            if (this.loading) {
+                setTimeout(() => { alert('hi!') }, 2000);
+            }
+
             let vue = this
-            let path = '/archive/list?page=1&limit=50&order=' + vue.sortOption.code + '&min_rating=0&max_rating=1000'
+            vue.loading = true
+
+            let page = vue.page
+            let path = '/archive/list?page=' + vue.page + '&limit=12&order=' + vue.sortOption.code + '&min_rating=0&max_rating=1000'
             
             axios.get(vue.serverUrl + path)
-                .then(function(res) {
-                    vue.archives = res.data
-                    if (updateSelectedArchive) {
-                        vue.selectArchive(res.data[0])
-                    }
-                })
+            .then(function(res) {
+                let length = res.data.length
+                vue.archives.push(...res.data)
+                if (updateSelectedArchive) {
+                    vue.selectArchive(res.data[0])
+                }
+
+                if (length < 12)
+                    vue.complete = true
+                else
+                    vue.page = page + 1
+            })
+            .then(() => {
+                vue.loading = false
+            })
+
         },
         selectArchive(item) {
             this.selected = item;
@@ -266,12 +293,21 @@ export default defineComponent({
             alert('공유 링크가 복사되었습니다.')
         },
         updateSortOption(v) {
+            if (v === this.sortOption) {
+                return;
+            }
+
+            this.archives = [];
+            this.page = 1;
+            this.complete = false;
             this.sortOption = v;
-            this.getArchives(false);
         },
         handleResize() {
             this.onMobile = (window.innerWidth < 768)
             this.onPad = (window.innerWidth >= 768 && window.innerWidth < 1280)
+        },
+        trigger() {
+            alert('complete=' + this.complete + ', page=' + this.page)
         }
     }
 })
@@ -714,7 +750,8 @@ export default defineComponent({
     }
 
     .shrink-canvas {
-        top: 80px !important;
+        top: 60px !important;
+        height: 420px;
     }
 
     @keyframes shimmer {
