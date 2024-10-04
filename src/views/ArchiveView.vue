@@ -63,7 +63,9 @@
                             </v-row>
                             <v-row>
                                 <v-col :cols="(onMobile) ? '12' : '8'">
-                                    <div class="selected-archive-title">{{ selected.item.title }}</div>
+                                    <div class="archive-title-wrapper">
+                                        <span class="selected-archive-title">{{ selected.item.title }}</span>
+                                    </div>
                                     <div class="selected-archive-artist" style="opacity: 0.7;">{{ selected.item.artist }} ({{ selected.item.release }})</div>
                                 </v-col>
                                 <v-col class="d-flex justify-end" cols="4" :style="{ 'display': onMobile ? 'none !important' : 'block' }">
@@ -91,7 +93,19 @@
                                 </v-col>
                             </v-row>
                             <v-row class="pt-2" v-if="selected.item.links">
-                                <iframe 
+                                <iframe
+                                    v-if="selected.item.links.youtube"
+                                    style="border-radius:12px"
+                                    :width="onMobile ? 330 : '100%'" 
+                                    :height="onMobile ? 85 : 156" 
+                                    :src="selected.item.links.youtube"
+                                    frameborder="1" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin" 
+                                    allowfullscreen>
+                                </iframe>
+                                <iframe
+                                    v-else
                                     style="border-radius:12px"
                                     :src="selected.item.links.spotify"
                                     :width="onMobile ? 330 : '100%'" 
@@ -334,6 +348,18 @@ export default defineComponent({
     src: url("../fonts/Nohemi-Bold.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
+}
+
+.archive-title-wrapper {
+    width: 100%;
+    white-space: nowrap;
+    overflow: scroll;
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.archive-title-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 @media screen and (max-width: 768px) {
