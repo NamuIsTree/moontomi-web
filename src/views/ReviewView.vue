@@ -230,13 +230,16 @@ export default defineComponent({
 
 .review-image {
   width: 100%;
-  height: 150px;
+  height: 180px;
 
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 
   clip-path: polygon(100% 0, 100% 80%, 0% 98%, 0 0%);
+  -moz-transition: all .3s;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
 .review-sheet {
@@ -265,7 +268,15 @@ export default defineComponent({
     background-repeat: no-repeat;
     background-size: cover;
 
-    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+
+  .review-sheet:hover .review-image {
+    clip-path: polygon(0 0, 85% 0, 75% 100%, 0 100%);
+    
   }
 
   .review-description {
