@@ -11,6 +11,11 @@ const routes = [
     component: () => import("@/views/ReviewView")
   },
   {
+    path: "/review/create",
+    name: "review-create",
+    component: () => import("@/views/detail/CreateReviewView")
+  },
+  {
     path: "/review/:id",
     name: "review-detail",
     component: () => import("@/views/detail/ReviewView")
