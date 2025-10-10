@@ -36,6 +36,7 @@
         :key="review.id" 
         v-for="review in reviews" 
       >
+      <a :href="'/review/' + review.id">
         <v-row style="margin: -16px; margin: -16px;">
           <v-col class="review-image" :cols="onMobile ? '12' : '4'" :style="{'background-image': `url(${review.image})`}"></v-col>
           <v-col :cols="onMobile ? '12' : '8'">
@@ -66,12 +67,14 @@
             </div>
           </v-col>
         </v-row>
+      </a>
       </v-container>
       <infinite-loading v-if="!complete" @infinite="getReviews"></infinite-loading>
     </v-container>
   </v-container>
 </template>
 <script>
+import axios from "axios";
 import { defineComponent } from 'vue'
 import InfiniteLoading from 'v3-infinite-loading'
 // import axios from 'axios'
@@ -124,63 +127,16 @@ export default defineComponent({
       // let sortBy = sortOption[0]
       // let order = sortOption[1]
 
-      // axios.get(this.serverUrl + '/review/list?page=' 
-      //   + vue.page + '&limit=15&sort_by=' + sortBy + '&order=' + order)
-      //   .then((res) => {
-      //     let length = res.data.length
-      //     vue.reviews.push(...res.data)
+      axios.get(this.serverUrl + '/review/list?page=' + vue.page + '&limit=15')
+        .then((res) => {
+          let length = res.data.length
+          vue.reviews.push(...res.data.items)
 
-      //     if (length < 10) 
-      //       vue.complete = true
-      //     else 
-      //       vue.page++
-      //   })
-      vue.complete = true
-      vue.reviews.push({
-        'id': 1,
-        'image': 'https://server.moontomi.com/image/d20cd0d7bbcc4b5499d2ccf5caabd5e9',
-        'title': '2025 문교수 연말 결산',
-        'description': '2025년에 어떤 음악이 우리의 가슴을 울렸는가?',
-        'writer': '문교수',
-        'type': '결산',
-        'date': '2025-10-08'
-      })
-      vue.reviews.push({
-        'id': 2,
-        'image': 'https://server.moontomi.com/image/cdae945d9e9f46cb9a014c33f35efe9f',
-        'title': '風街ろまん으로 알아보는 J-ROCK',
-        'description': '일본 ROCK의 태동기에 風街ろまん이 끼친 영향력에 대해 알아보자.',
-        'writer': '문교수',
-        'type': '칼럼',
-        'date': '2025-10-08'
-      })
-      vue.reviews.push({
-        'id': 3,
-        'image': 'https://server.moontomi.com/image/293a2923967e4f59ae90fd82c0f2617b',
-        'title': 'K-POP Demon Hunters 그 정돈가?',
-        'description': 'K-POP의 역사를 새로 쓴 데몬 헌터스의 성공을 문교수의 시각으로 바라보자.',
-        'writer': '문교수',
-        'type': '칼럼',
-        'date': '2025-10-08'
-      })
-      vue.reviews.push({
-        'id': 4,
-        'image': 'https://server.moontomi.com/image/768217ed2c884e21950861e4fc7f214e',
-        'title': '왜 힙합은 안멋진가?',
-        'description': '국내 힙합의 흥망성쇠에 대한 소해',
-        'writer': '문교수',
-        'type': '잡설',
-        'date': '2025-10-08'
-      })
-      vue.reviews.push({
-        'id': 5,
-        'image': 'https://server.moontomi.com/image/7089fd0e4a9e4f54969b9e118ae946de',
-        'title': '조규찬 10선',
-        'description': '늘 새로운 규찬이햄이 10년 전에 발매한 신곡을 가져와봤다.',
-        'writer': '문교수',
-        'type': '잡설',
-        'date': '2025-10-08'
-      })
+          if (length < 10) 
+            vue.complete = true
+          else 
+            vue.page++
+        })
     }
   }
 })
@@ -209,6 +165,7 @@ export default defineComponent({
 
 .main {
   font-family: 'LINE Seed';
+  padding-bottom: 100px;
 }
 
 .review-title {
@@ -249,6 +206,11 @@ export default defineComponent({
   border-bottom: 1px solid;
   border-color: #BDC0C4;
   border-bottom-right-radius: 7px;
+}
+
+.review-sheet a {
+  text-decoration: none;
+  color: black;
 }
 
 .review-writer {

@@ -1,5 +1,9 @@
 <template>
     <v-container class="main">
+        <v-form
+            v-model="form"
+            @submit.prevent="onSubmit"
+        >
         <v-row>
             <v-col>
                 <h2 class="text-center py-4">투고하기</h2>
@@ -26,11 +30,13 @@
                     label="작성자"
                     variant="outlined"
                     style="margin-bottom: -20px;"
+                    :rules="[required]"
                 ></v-text-field>
                 <v-select
                     label="타입"
-                    v-model="columnType"
-                    :items="columnTypes"
+                    v-model="reviewType"
+                    :items="reviewTypes"
+                    :rules="[required]"
                     variant="outlined"
                     style="margin-bottom: -20px;"
                 ></v-select>
@@ -39,15 +45,30 @@
                     v-model="title"
                     variant="outlined"
                     style="margin-bottom: -20px;"
+                    :rules="[required]"
                 ></v-text-field>
                 <v-textarea
                     label="설명"
                     v-model="description"
                     variant="outlined"
-                    style="margin-bottom: -32px;"
+                    style="margin-bottom: -20px;"
+                    :rules="[required]"
                     auto-grow
                     rows="2"
                 ></v-textarea>
+                <v-text-field
+                    v-model="password"
+                    :readonly="loading"
+                    :rules="[required, isPasswordFormat]"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showPassword ? 'text' : 'password'"
+                    @click:append="() => showPassword = !showPassword"
+                    style="margin-bottom: -32px"
+                    variant="outlined"
+                    clearable
+                    label="비밀번호"
+                    placeholder="Enter Password"
+                ></v-text-field>
             </v-col>
         </v-row>
         <v-row>
@@ -67,7 +88,18 @@
                 block
             > UPLOAD
             </v-btn>
+            <v-overlay
+                :model-value="loading"
+                class="align-center justify-center"
+            >
+                <v-progress-circular
+                color="#ff8080"
+                indeterminate
+                size="45"
+                ></v-progress-circular>
+            </v-overlay>  
         </v-row>
+        </v-form>
     </v-container>
 </template>
   
@@ -92,16 +124,20 @@
     Link,
     Highlight,
     Blockquote,
-    FontSize
+    FontSize,
+    LineHeight,
+    History
   } from 'element-tiptap-vue3-fixed';
+import axios from 'axios';
 
   export default defineComponent({
     name: 'CreateReview',
     data() {
         return {
+            loading: false,
             currentImage: undefined,
             previewImage: undefined,
-            columnTypes: ['결산', '칼럼', '잡설'],
+            reviewTypes: ['결산', '칼럼', '잡설'],
             extensions: [
                 Doc,
                 Text,
@@ -112,6 +148,7 @@
                 Italic.configure({ }),
                 Strike,
                 FontSize,
+                LineHeight,
                 Link,
                 Color,
                 Highlight,
@@ -121,12 +158,15 @@
                 Blockquote,
                 Table,
                 Image,
-                Iframe
+                Iframe,
+                History
             ],
             writer: null,
             title: null,
             description: null,
-            
+            reviewType: null,
+            password: null,
+            showPassword: false,
             content: ref(``)
         }
     },
@@ -135,6 +175,57 @@
             let image = e.target.files[0];
             this.currentImage = image;
             this.previewImage = window.URL.createObjectURL(this.currentImage);
+        },
+        required(v) {
+            return !!v || 'Field is required'
+        },
+        isPasswordFormat(v) {
+            /* eslint-disable */
+            const pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
+
+            if (!pattern.test(v)) {
+                return '알파벳 대소문자, 숫자, 특수문자만 사용할 수 있습니다.'
+            }
+
+            return true
+        },
+        onSubmit(e) {
+            e.preventDefault();
+
+            if (!this.form) return
+            this.loading = true
+
+            const formData = new FormData();
+            let vue = this
+
+            formData.append('image', vue.currentImage)
+            formData.append('title', vue.title)
+            formData.append('writer', vue.writer)
+            formData.append('review_type', vue.reviewType)
+            formData.append('description', vue.description)
+            formData.append('content', vue.content)
+            formData.append('password', vue.password)
+
+            axios.put(this.serverUrl + '/review', formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                transformRequest: [
+                    function() {
+                        return formData;
+                    }
+                ]
+            }).then((res) => {
+                if (res) {
+                    setTimeout(() => {
+                        alert('투고가 완료되었습니다')
+
+                        let reviewPage = '/review/' + res.data.id
+                        vue.$router.push(reviewPage)
+                                .then(() => { this.$router.go() })
+                    })
+                }
+            })
         }
     }
   })
