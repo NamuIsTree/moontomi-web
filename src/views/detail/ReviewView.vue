@@ -6,11 +6,11 @@
           <h4>#{{ review.id }}</h4>
           <h4 style="color: #808080">{{ review.created_at }}</h4>
           <h1 class="review-title font-italic">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-quote" viewBox="-10 0 24 24">
+            <svg v-if="!onMobile" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-quote" viewBox="-10 0 24 24">
               <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388q0-.527.062-1.054.093-.558.31-.992t.559-.683q.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 9 7.558V11a1 1 0 0 0 1 1zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612q0-.527.062-1.054.094-.558.31-.992.217-.434.559-.683.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 3 7.558V11a1 1 0 0 0 1 1z"/>
             </svg>
             {{ review.title }}
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-quote" viewBox="-2 0 24 24">
+            <svg v-if="!onMobile" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-quote" viewBox="-2 0 24 24">
               <g transform="rotate(180 8 8)">
                 <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388q0-.527.062-1.054.093-.558.31-.992t.559-.683q.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 9 7.558V11a1 1 0 0 0 1 1zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612q0-.527.062-1.054.094-.558.31-.992.217-.434.559-.683.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 3 7.558V11a1 1 0 0 0 1 1z"/>
               </g>
@@ -74,6 +74,8 @@ import {
   Link,
   Highlight,
   Blockquote,
+  HorizontalRule,
+  LineHeight,
   FontSize
 } from 'element-tiptap-vue3-fixed';
 
@@ -83,6 +85,7 @@ export default defineComponent({
     return {
       review: null,
       editor: null,
+      onMobile: false,
       extensions: [
         Doc.configure({ menubar: false }),
         Text.configure({ menubar: false }),
@@ -100,13 +103,26 @@ export default defineComponent({
         BulletList.configure({ menubar: false }),
         OrderedList.configure({ menubar: false }),
         Blockquote.configure({ menubar: false }),
+        HorizontalRule.configure({ menubar: false }),
         Table.configure({ menubar: false }),
         Image.configure({ menubar: false }),
+        LineHeight.configure({ menubar: false }),
         Iframe.configure({ menubar: false })
       ],
     }
   },
   mounted() {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+
+    window.addEventListener('scroll', () => {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > 50) {
+          this.shrink = true;
+      } else {
+          this.shrink = false;
+      }
+    });
     this.getReview()
   },
   methods: {
@@ -118,7 +134,10 @@ export default defineComponent({
         .then(function(res) {
           vue.review = res.data
         })
-    }
+    },
+    handleResize() {
+      this.onMobile = (window.innerWidth < 768)
+    },
   }
 })
 
@@ -158,7 +177,7 @@ export default defineComponent({
 .main {
   font-family: "LINE Seed";
   padding-bottom: 100px;
-  width: 800px;
+  width: 384px;
 }
 
 .review-image {
@@ -170,7 +189,7 @@ export default defineComponent({
 }
 
 .review-content {
-  width: 800px;
+  width: 384px;
 }
 
 .main :deep(.el-tiptap-editor__menu-bar) {
@@ -185,6 +204,29 @@ export default defineComponent({
 
 .main :deep(.el-tiptap-editor__content) a {
   color: rgba(255, 128, 128, 0.8);
+}
+
+@media (max-width: 768px) {
+
+  .review-image {
+    width: 70%;
+  }
+
+  .main :deep(.image-view__body__image) {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .main {
+    width: 768px;
+  }
+
+  .review-content {
+    width: 768px;
+  }
 }
 
 </style>
