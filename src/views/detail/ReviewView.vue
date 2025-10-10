@@ -177,7 +177,8 @@ export default defineComponent({
 .main {
   font-family: "LINE Seed";
   padding-bottom: 100px;
-  width: 384px;
+  margin-left: -5%;
+  width: 110%;
 }
 
 .review-image {
@@ -189,7 +190,7 @@ export default defineComponent({
 }
 
 .review-content {
-  width: 384px;
+  width: 110%;
 }
 
 .main :deep(.el-tiptap-editor__menu-bar) {
