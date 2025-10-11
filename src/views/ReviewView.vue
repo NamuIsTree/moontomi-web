@@ -86,10 +86,10 @@ import { defineComponent } from 'vue'
 import InfiniteLoading from 'v3-infinite-loading'
 
 const sortOptions = [
-  { id: 'id-desc', value: '날짜별 내림차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
-  { id: 'id-asc', value: '날짜별 오름차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-up-bold' }},
-  { id: 'view-desc', value: '조회수 내림차순', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-down-bold' }},
-  { id: 'view-asc', value: '조회수 오름차순', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-up-bold' }}
+  { id: 'id-desc', value: '최신순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
+  { id: 'id-asc', value: '오래된 순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-up-bold' }},
+  { id: 'view-desc', value: '조회수 높은순', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-down-bold' }},
+  { id: 'view-asc', value: '조회수 낮은순', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-up-bold' }}
 ]
 
 export default defineComponent({
