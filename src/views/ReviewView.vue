@@ -84,7 +84,6 @@
 import axios from "axios";
 import { defineComponent } from 'vue'
 import InfiniteLoading from 'v3-infinite-loading'
-// import axios from 'axios'
 
 const sortOptions = [
   { id: 'id-desc', value: '날짜별 내림차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
@@ -121,6 +120,7 @@ export default defineComponent({
         this.complete = false
         this.prevSortOption = this.selectedSortOption
       }
+      this.getReviews()
     },
     handleResize() {
       if (window.innerWidth < 768) {

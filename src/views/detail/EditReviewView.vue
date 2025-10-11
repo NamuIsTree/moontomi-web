@@ -154,7 +154,7 @@ import axios from 'axios';
                 Link.configure({ bubble: true }),
                 Color.configure({ bubble: true }),
                 Highlight,
-                TextAlign,
+                TextAlign.configure({ bubble: true }),
                 BulletList,
                 OrderedList,
                 Blockquote,
