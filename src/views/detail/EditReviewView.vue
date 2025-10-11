@@ -19,8 +19,6 @@
                         <img 
                             class="thumbnail-preview mt-2 mb-3"
                             :src="previewImage ? previewImage : '/icons/upload-preview.png'"
-                            width="250"
-                            height="250"
                             alt="thumbnail-preview"
                         />
                     </div>
@@ -273,6 +271,15 @@ import axios from 'axios';
   padding-bottom: 100px;
   width: 768px;
 }
+
+.thumbnail-preview {
+  width: 88%;
+  min-width: 100px;
+  max-width: 300px;
+
+  height: 100%;
+}
+
 
 @media screen and (max-width: 768px) {
     .main {
