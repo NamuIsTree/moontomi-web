@@ -227,18 +227,23 @@ export default defineComponent({
   border-top-right-radius: 7px;
 }
 
+
 .review-sheet a {
   text-decoration: none;
   color: black;
 }
 
+.review-title {
+  padding-top: 20px;
+}
+
 .review-view {
-    font-size: 0.9rem;
-  }
+  font-size: 0.9rem;
+}
 
 .review-writer {
-    font-size: 0.9rem;
-  }
+  font-size: 0.9rem;
+}
 
 @media (min-width: 768px) {
   .review-sheet {
@@ -264,6 +269,10 @@ export default defineComponent({
     
   }
 
+  .review-title {
+    padding-top: 0px;
+  }
+
   .review-description {
     height: 120px;
     font-size: 1rem;
@@ -280,10 +289,5 @@ export default defineComponent({
   .review-date {
     margin-top: -5px;
   }
-}
-
-.review-rating {
-  font-family: 'Lobster';
-  font-size: 22px;
 }
 </style>
