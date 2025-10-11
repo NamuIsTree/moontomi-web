@@ -7,10 +7,6 @@
             <div class="selected-option text-center">
               {{ selectedSortOption.value }}
               <br>
-              <span v-if="selectedSortOption.subValue" class="text-grey">
-                ( {{ selectedSortOption.subValue }} )
-              </span>
-              <br>
               <v-btn-toggle
                 v-model="selectedSortOption"
                 variant="outlined"
@@ -54,15 +50,26 @@
                 </g>
               </svg>
             </div>
-            <v-divider class="mt-2 mb-3"></v-divider>
+            <v-divider class="mt-2 mb-3" color="#EAEAEA"></v-divider>
             <div>
               <div class="review-description">
                 {{ review.description }}
               </div>
               <div>
-                <div class="review-writer d-flex justify-end">
-                  by {{ review.writer }}
-                </div>
+                <v-row>
+                  <v-col>
+                    <div class="review-view">
+                     <v-icon icon="mdi-eye" size="small" style="margin-top: -2px; margin-right: 5px; color: #808080;"></v-icon>
+                     <span style="color: #808080">조회수 </span>
+                     <span>{{ review.views }}</span>
+                    </div>
+                  </v-col>
+                  <v-col>
+                    <div class="review-writer d-flex justify-end">
+                      by {{ review.writer }}
+                    </div>
+                  </v-col>
+                </v-row>
               </div>
             </div>
           </v-col>
@@ -80,10 +87,10 @@ import InfiniteLoading from 'v3-infinite-loading'
 // import axios from 'axios'
 
 const sortOptions = [
-  { id: 'id-desc', value: '날짜별 내림차순', subValue: '', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
-  { id: 'id-asc', value: '날짜별 오름차순', subValue: '', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-up-bold' }},
-  { id: 'view-desc', value: '조회수 내림차순', subValue: '', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-down-bold' }},
-  { id: 'view-asc', value: '조회수 오름차순', subValue: '', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-up-bold' }}
+  { id: 'id-desc', value: '날짜별 내림차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-down-bold' }},
+  { id: 'id-asc', value: '날짜별 오름차순', icon: { main: 'mdi-clock-outline', sub: 'mdi-arrow-up-bold' }},
+  { id: 'view-desc', value: '조회수 내림차순', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-down-bold' }},
+  { id: 'view-asc', value: '조회수 오름차순', icon: { main: 'mdi-book-play', sub: 'mdi-arrow-up-bold' }}
 ]
 
 export default defineComponent({
@@ -94,6 +101,7 @@ export default defineComponent({
   data() {
     return {
       selectedSortOption: sortOptions[0],
+      prevSortOption: sortOptions[0],
       sortOptions: sortOptions,
       complete: false,
       onMobile: false,
@@ -107,9 +115,12 @@ export default defineComponent({
   },
   methods: {
     toggleSortOption() {
-      this.reviews = []
-      this.page = 1
-      this.complete = false
+      if (this.prevSortOption.id !== this.selectedSortOption.id) {
+        this.reviews = []
+        this.page = 1
+        this.complete = false
+        this.prevSortOption = this.selectedSortOption
+      }
     },
     handleResize() {
       if (window.innerWidth < 768) {
@@ -122,12 +133,13 @@ export default defineComponent({
       if (this.complete) return
 
       let vue = this
-      // let sortOption = vue.selectedSortOption.id.split('-')
+      let sortOption = vue.selectedSortOption.id.split('-')
 
-      // let sortBy = sortOption[0]
-      // let order = sortOption[1]
+      let sortBy = sortOption[0]
+      let order = sortOption[1]
 
-      axios.get(this.serverUrl + '/review/list?page=' + vue.page + '&limit=15')
+      axios.get(this.serverUrl + '/review/list?page=' 
+        + vue.page + '&limit=15&sort_by=' + sortBy + '&order=' + order)
         .then((res) => {
           let length = res.data.length
           vue.reviews.push(...res.data.items)
@@ -206,12 +218,18 @@ export default defineComponent({
   border-bottom: 1px solid;
   border-color: #BDC0C4;
   border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
 .review-sheet a {
   text-decoration: none;
   color: black;
 }
+
+.review-view {
+    font-size: 0.9rem;
+  }
 
 .review-writer {
     font-size: 0.9rem;
@@ -230,7 +248,7 @@ export default defineComponent({
     background-repeat: no-repeat;
     background-size: cover;
 
-    clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+    clip-path: polygon(0 0, 95% 0, 90% 100%, 0 100%);
     -moz-transition: all .3s;
     -webkit-transition: all .3s;
     transition: all .3s;
@@ -242,7 +260,11 @@ export default defineComponent({
   }
 
   .review-description {
-    height: 100px;
+    height: 120px;
+    font-size: 1rem;
+  }
+
+  .review-view {
     font-size: 1rem;
   }
 

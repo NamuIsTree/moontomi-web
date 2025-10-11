@@ -12,8 +12,13 @@ const routes = [
   },
   {
     path: "/review/create",
-    name: "review-create",
+    name: "create-review",
     component: () => import("@/views/detail/CreateReviewView")
+  },
+  {
+    path: "/review/:id/edit",
+    name: "edit-review",
+    component: () => import("@/views/detail/EditReviewView")
   },
   {
     path: "/review/:id",
