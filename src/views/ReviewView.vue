@@ -120,7 +120,6 @@ export default defineComponent({
         this.complete = false
         this.prevSortOption = this.selectedSortOption
       }
-      this.getReviews()
     },
     handleResize() {
       if (window.innerWidth < 768) {
