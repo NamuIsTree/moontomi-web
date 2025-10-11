@@ -76,7 +76,7 @@
         </v-row>
       </a>
       </v-container>
-      <infinite-loading v-if="!complete" @infinite="getReviews"></infinite-loading>
+      <infinite-loading v-if="!complete && !toggled" class="loading-bar" @infinite="getReviews"></infinite-loading>
     </v-container>
   </v-container>
 </template>
@@ -104,6 +104,7 @@ export default defineComponent({
       sortOptions: sortOptions,
       complete: false,
       onMobile: false,
+      toggled: false,
       reviews: [],
       page: 1
     }
@@ -114,11 +115,15 @@ export default defineComponent({
   },
   methods: {
     toggleSortOption() {
-      if (this.prevSortOption.id !== this.selectedSortOption.id) {
-        this.reviews = []
-        this.page = 1
-        this.complete = false
-        this.prevSortOption = this.selectedSortOption
+      let vue = this
+      if (vue.prevSortOption.id !== vue.selectedSortOption.id) {
+        vue.reviews = []
+        vue.page = 1
+        vue.prevSortOption = vue.selectedSortOption
+        vue.toggled = true
+        vue.complete = false
+        vue.getReviews()
+          .then(() => { vue.toggled = false })
       }
     },
     handleResize() {
@@ -129,6 +134,7 @@ export default defineComponent({
       }
     },
     getReviews() {
+      console.log('getReview! - complete=' + this.complete)
       if (this.complete) return
 
       let vue = this
