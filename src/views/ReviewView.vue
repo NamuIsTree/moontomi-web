@@ -54,15 +54,26 @@
                 </g>
               </svg>
             </div>
-            <v-divider class="mt-2 mb-3"></v-divider>
+            <v-divider class="mt-2 mb-3" color="#EAEAEA"></v-divider>
             <div>
               <div class="review-description">
                 {{ review.description }}
               </div>
               <div>
-                <div class="review-writer d-flex justify-end">
-                  by {{ review.writer }}
-                </div>
+                <v-row>
+                  <v-col>
+                    <div class="review-view">
+                     <v-icon icon="mdi-eye" size="small" style="margin-top: -2px; margin-right: 5px; color: #808080;"></v-icon>
+                     <span style="color: #808080">조회수 </span>
+                     <span>{{ review.views }}</span>
+                    </div>
+                  </v-col>
+                  <v-col>
+                    <div class="review-writer d-flex justify-end">
+                      by {{ review.writer }}
+                    </div>
+                  </v-col>
+                </v-row>
               </div>
             </div>
           </v-col>
@@ -206,12 +217,18 @@ export default defineComponent({
   border-bottom: 1px solid;
   border-color: #BDC0C4;
   border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
 .review-sheet a {
   text-decoration: none;
   color: black;
 }
+
+.review-view {
+    font-size: 0.9rem;
+  }
 
 .review-writer {
     font-size: 0.9rem;
@@ -230,7 +247,7 @@ export default defineComponent({
     background-repeat: no-repeat;
     background-size: cover;
 
-    clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+    clip-path: polygon(0 0, 95% 0, 90% 100%, 0 100%);
     -moz-transition: all .3s;
     -webkit-transition: all .3s;
     transition: all .3s;
@@ -242,7 +259,11 @@ export default defineComponent({
   }
 
   .review-description {
-    height: 100px;
+    height: 120px;
+    font-size: 1rem;
+  }
+
+  .review-view {
     font-size: 1rem;
   }
 

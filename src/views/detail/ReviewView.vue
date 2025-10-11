@@ -20,8 +20,13 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-chip label>
-            {{ review.type }}
+          <v-chip 
+            label
+            variant="outlined"
+          >
+            <span class="pr-3">{{ review.type }}</span>
+            <v-divider color="black" vertical></v-divider>
+            <span class="pl-3">조회수 {{ review.views }}회</span>
           </v-chip>
         </v-col>
       </v-row>
