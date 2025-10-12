@@ -15,6 +15,7 @@
               >
                 <v-btn 
                   v-for="sortOption in sortOptions" 
+                  :class="{ 'active-disabled': selectedSortOption.id === sortOption.id }"
                   :key="sortOption.id" 
                   :value="sortOption"
                   @click="toggleSortOption"
@@ -182,6 +183,13 @@ export default defineComponent({
 .main {
   font-family: 'LINE Seed';
   padding-bottom: 100px;
+}
+
+.v-btn--disabled.active-disabled {
+  background-color: var(--v-theme-primary) !important;
+  color: white !important;
+  opacity: 1;
+  cursor: default; 
 }
 
 .review-title {
