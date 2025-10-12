@@ -16,6 +16,7 @@
                 variant="outlined"
                 divided
                 rounded="0"
+                mandatory
               >
                 <v-btn 
                   v-for="sortOption in sortOptions" 
