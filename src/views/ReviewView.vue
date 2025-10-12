@@ -15,6 +15,7 @@
               >
                 <v-btn 
                   v-for="sortOption in sortOptions" 
+                  :class="{ 'active-disabled': selectedSortOption.id === sortOption.id }"
                   :key="sortOption.id" 
                   :value="sortOption"
                   @click="toggleSortOption"
@@ -28,7 +29,7 @@
         </v-row>
       </v-container>
       <v-container 
-        class="review-sheet my-5 mx-auto"
+        class="review-sheet mt-5 mb-8 mx-auto"
         :key="review.id" 
         v-for="review in reviews" 
       >
@@ -134,7 +135,6 @@ export default defineComponent({
       }
     },
     getReviews() {
-      console.log('getReview! - complete=' + this.complete)
       if (this.complete) return
 
       let vue = this
@@ -183,6 +183,13 @@ export default defineComponent({
 .main {
   font-family: 'LINE Seed';
   padding-bottom: 100px;
+}
+
+.v-btn--disabled.active-disabled {
+  background-color: var(--v-theme-primary) !important;
+  color: white !important;
+  opacity: 1;
+  cursor: default; 
 }
 
 .review-title {

@@ -19,6 +19,7 @@
               >
                 <v-btn 
                   v-for="sortOption in sortOptions" 
+                  :class="{ 'active-disabled': selectedSortOption.id === sortOption.id }"
                   :key="sortOption.id" 
                   :value="sortOption"
                   @click="toggleSortOption"
@@ -145,6 +146,7 @@ export default defineComponent({
   data() {
     return {
       selectedSortOption: sortOptions[0],
+      prevSortOption: sortOptions[0],
       sortOptions: sortOptions,
       complete: false,
       onMobile: false,
@@ -158,9 +160,13 @@ export default defineComponent({
   },
   methods: {
     toggleSortOption() {
-      this.lectures = []
-      this.page = 1
-      this.complete = false
+      let vue = this
+      if (vue.prevSortOption.id !== vue.selectedSortOption.id) {
+        vue.lectures = []
+        vue.page = 1
+        vue.prevSortOption = vue.selectedSortOption
+        vue.complete = false
+      }
     },
     handleResize() {
       if (window.innerWidth < 768) {
@@ -223,6 +229,13 @@ export default defineComponent({
 
 .lecture-sheet {
   width: 90%;
+}
+
+.v-btn--disabled.active-disabled {
+  background-color: var(--v-theme-primary) !important;
+  color: white !important;
+  opacity: 1;
+  cursor: default; 
 }
 
 @media (min-width: 768px) {
