@@ -28,7 +28,7 @@
         </v-row>
       </v-container>
       <v-container 
-        class="review-sheet my-5 mx-auto"
+        class="review-sheet mt-5 mb-8 mx-auto"
         :key="review.id" 
         v-for="review in reviews" 
       >
@@ -134,7 +134,6 @@ export default defineComponent({
       }
     },
     getReviews() {
-      console.log('getReview! - complete=' + this.complete)
       if (this.complete) return
 
       let vue = this

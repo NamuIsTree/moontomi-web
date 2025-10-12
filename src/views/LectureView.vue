@@ -145,6 +145,7 @@ export default defineComponent({
   data() {
     return {
       selectedSortOption: sortOptions[0],
+      prevSortOption: sortOptions[0],
       sortOptions: sortOptions,
       complete: false,
       onMobile: false,
@@ -158,9 +159,13 @@ export default defineComponent({
   },
   methods: {
     toggleSortOption() {
-      this.lectures = []
-      this.page = 1
-      this.complete = false
+      let vue = this
+      if (vue.prevSortOption.id !== vue.selectedSortOption.id) {
+        vue.lectures = []
+        vue.page = 1
+        vue.prevSortOption = vue.selectedSortOption
+        vue.complete = false
+      }
     },
     handleResize() {
       if (window.innerWidth < 768) {
